@@ -1,0 +1,44 @@
+{
+    "manifest_version": 2,
+    "name": "niico",
+    "version": "1.0",
+    "permissions": [
+      "http://*/*",
+      "https://*/*",
+      "storage"
+    ],
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "http://www.nicovideo.jp/*",
+                "https://www.nicovideo.jp/*",
+                "http://ch.nicovideo.jp/*",
+                "https://ch.nicovideo.jp/*"
+            ],
+            "js": [
+                "js/libs/jquery-3.3.1.min.js",
+                "js/libs/jquery.mousewheel.min.js",
+                "js/libs/jquery-ui.min.js",
+                "js/libs/vue.min.js",
+                "js/tpl.js",
+                "js/video-list.tpl.js",
+                "js/consts.js",
+                "js/utils.js",
+                "js/Niico.js",
+                "js/FlowCommentsController.js",
+                "js/script.js"
+            ],
+            "css": [
+                "css/style.css"
+            ]
+        }
+    ],
+    "web_accessible_resources": [
+        "*.png"
+    ]
+}
