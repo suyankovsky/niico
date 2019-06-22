@@ -1,43 +1,42 @@
 {
     "manifest_version": 2,
     "name": "niico",
-    "version": "1.0",
+    "version": "2.0",
     "permissions": [
       "http://*/*",
       "https://*/*",
-      "storage"
+      "storage",
+      "tabs"
     ],
     "icons": {
-        "16": "icon16.png",
-        "48": "icon48.png",
-        "128": "icon128.png"
+        "16": "dist/img/icon/16.png",
+        "48": "dist/img/icon/48.png",
+        "128": "dist/img/icon/128.png"
+    },
+    "browser_action": {
+        "default_icon": {
+            "16": "dist/img/icon/16.png",
+            "48": "dist/img/icon/48.png",
+            "128": "dist/img/icon/128.png"
+        }
     },
     "content_scripts": [
         {
             "matches": [
-                "http://www.nicovideo.jp/*",
-                "https://www.nicovideo.jp/*",
-                "http://ch.nicovideo.jp/*",
-                "https://ch.nicovideo.jp/*"
-            ],
-            "js": [
-                "js/libs/jquery-3.3.1.min.js",
-                "js/libs/jquery.mousewheel.min.js",
-                "js/libs/jquery-ui.min.js",
-                "js/libs/vue.min.js",
-                "js/tpl.js",
-                "js/video-list.tpl.js",
-                "js/consts.js",
-                "js/utils.js",
-                "js/Niico.js",
-                "js/FlowCommentsController.js",
-                "js/script.js"
+                "*://*.nicovideo.jp/**"
             ],
             "css": [
-                "css/style.css"
+                "dist/style.css"
+            ],
+            "js": [
+                "dist/content.js"
             ]
         }
     ],
+    "background": {
+        "scripts": ["dist/background.js"],
+        "persistent": false
+    },
     "web_accessible_resources": [
         "*.png"
     ]

@@ -1,0 +1,25 @@
+#niico-loading-bar {
+    animation: .01s cubic-bezier(0, 1, .5, .5) 0s 1 normal none running loading;
+    background: #2a7df6;
+    filter: drop-shadow(0 0 4px #2a7df6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    z-index: 99999;
+    width: 95%;
+
+    @keyframes loading {
+      0% {
+        width: 0;
+      }
+
+      100% {
+        width: 80%;
+      }
+    }
+
+    &.is_complete {
+        width: 100%;
+    }
+}
