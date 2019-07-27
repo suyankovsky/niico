@@ -63,6 +63,10 @@
     video {
         width: 100%;
         height: 100%;
+
+        transition-property: transform;
+        transition-duration: .3s;
+        transform: scale(1, 1);
     }
 }
 </style>

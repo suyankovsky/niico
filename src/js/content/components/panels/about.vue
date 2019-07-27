@@ -48,6 +48,30 @@
                 <div class="niico-chan"><NiicoIcon/></div>
             </dd>
         </dl>
+
+        <dl>
+            <dt>リリース履歴</dt>
+            <dd>
+                <ul>
+                    <li>
+                        <a href="https://ch.nicovideo.jp/article/ar1681485" target="_blank">
+                        v.1.0(2018/10/8)
+                        </a>
+                        : 初回リリース。
+                    </li>
+                    <li>
+                        <a href="https://ch.nicovideo.jp/article/ar1681485" target="_blank">
+                            v.2.0(2019/6/23)
+                        </a>
+                        : コードベースを書き直したリリース。
+                    </li>
+                    <li>
+                        v.2.1(2019/7/28)
+                        : 反転機能を追加。デザインの微修正。
+                    </li>
+                </ul>
+            </dd>
+        </dl>
     </div>
 </template>
 
