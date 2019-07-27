@@ -1,7 +1,8 @@
 {
     "manifest_version": 2,
     "name": "niico",
-    "version": "2.0",
+    "version": "2.1",
+    "description": "ニコニコ動画でランキングや検索結果をザッピングするためのChrome拡張機能です。ニコニコ動画にアクセスし、なにかの動画のリンクをクリックするとプレイヤーが起動します。",
     "permissions": [
       "http://*/*",
       "https://*/*",

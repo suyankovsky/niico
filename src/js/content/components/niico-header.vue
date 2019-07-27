@@ -127,7 +127,8 @@
     }
 
     .iconButton {
-        color: #444;
+        color: #777;
+        cursor: pointer;
         width: 40px;
         height: 100%;
         justify-content: center;

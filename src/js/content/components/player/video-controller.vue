@@ -136,6 +136,7 @@
                         </dd>
                     </dl>
                 </li>
+                <li @click="toggleMirrorHorizontal" :class="[{'is-active': is_mirror_horizontal}]">反転</li>
                 <li @click="toggleShowDetailSlider" :class="[{'is-active': is_show_detail_slider}]"><SlidersIcon /></li>
                 <li @click="requestMiniPlayerScreenMode" :class="[{'is-active': is_mini_player_mode}]"><MiniPlayerIcon /></li>
                 <li @click="requestFullScreenMode" :class="[{'is-active': is_full_screen_mode}]"><MaximizeIcon /></li>
@@ -369,6 +370,7 @@
 
                 li {
                     margin: 0 6px;
+                    cursor: pointer;
 
                     &.time_display {
                         line-height: 1;
@@ -388,6 +390,9 @@
                     &.is-active svg {
                         color: #2a7df6;
                         fill: #2a7df6;
+                    }
+                    &.is-active {
+                        color: #2a7df6;
                     }
 
                     dl {
@@ -492,6 +497,7 @@
 </style>
 
 <script>
+import $ from 'jquery';
     import {mapState, mapActions, mapGetters, mapMutations} from 'vuex';
     import NiicoSelect from 'js/content/components/common/form/input-select.vue';
     import InputHorizontalRange from 'js/content/components/common/form/input-range-horizontal.vue';
@@ -528,6 +534,7 @@
             return {
                 do_on_ended_map,
                 is_show_detail_slider: false,
+                is_mirror_horizontal: false,
             }
         },
         mounted() {
@@ -629,6 +636,19 @@
             },
             toggleShowDetailSlider: function() {
                 this.is_show_detail_slider = !this.is_show_detail_slider;
+            },
+            toggleMirrorHorizontal() {
+                this.is_mirror_horizontal = !this.is_mirror_horizontal;
+
+                if(this.is_mirror_horizontal) {
+                    $('video').css({
+                        transform: 'scale(-1, 1)',
+                    });
+                } else {
+                    $('video').css({
+                        transform: 'scale(1, 1)',
+                    });
+                }
             },
 
             addMylist: function() {
