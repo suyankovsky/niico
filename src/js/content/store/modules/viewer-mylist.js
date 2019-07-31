@@ -50,7 +50,10 @@ const mutations = {
 }
 
 const actions = {
-    getViewerMylistgroup: ({commit, state}, thread_id) => {
+    getViewerMylistgroup: ({commit, state, getters, rootGetters}, thread_id) => {
+        const is_loggedin = rootGetters['status/is_loggedin'];
+        if(!is_loggedin) return;
+
         ajaxApi.getViewerMylistgroup(thread_id).then(
             data => {
                 commit('setMylistGroup', data.mylists);

@@ -23,6 +23,8 @@ const state = {
     client_height: 0,
 
     is_show_niico_float_window: false,
+
+    user_id: undefined,
 };
 
 const window_mode_map = [
@@ -65,6 +67,9 @@ const getters = {
             x: state.mini_x,
             y: state.mini_y,
         }
+    },
+    is_loggedin: (state) => {
+        return state.user_id > 0 ? true : false;
     },
 };
 
@@ -130,6 +135,15 @@ const mutations = {
     resetPlayerPosition: (state) => {
         state.mini_x = 0;
         state.mini_y = 0;
+    },
+
+    setUserId: (state, user_id) => {
+        if(user_id > 0) {
+            state.user_id = user_id;
+            return;
+        }
+
+        state.user_id = -1;
     },
 }
 

@@ -13,6 +13,13 @@ const state = {
 
 const getters = {
     histories: (state, getters, rootState) => {
+        if(!rootState.status.is_loggedin) {
+            return {
+                code: -4,
+                content: 'ログインしてください。',
+            };
+        }
+
         if(!state.is_loaded) {
             return {
                 code: -1,

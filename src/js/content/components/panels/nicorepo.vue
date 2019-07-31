@@ -6,7 +6,13 @@
                 本家ニコレポページ
             </a>
         </div>
-        <template v-if="nicorepo.length > 0">
+        <template v-if="!is_loggedin">
+            ログインしてください。
+        </template>
+        <template v-else-if="is_loading">
+            読み込み中...
+        </template>
+        <template v-else-if="nicorepo.length > 0">
             <ul>
                 <li v-for="(line) in upload_topic" class="line">
                     <div class="icon">
@@ -32,11 +38,6 @@
                     </div>
                 </li>
             </ul>
-        </template>
-        <template v-if="is_loading">
-            読み込み中...
-        </template>
-        <template v-else>
             <div class="button button--center" @click="load">
                 もっと見る
             </div>
@@ -137,6 +138,7 @@
             ...mapGetters({
                 upload_topic: 'nicorepo/upload_topic',
                 is_loading: 'nicorepo/is_loading',
+                is_loggedin: 'status/is_loggedin',
             }),
         },
         mounted() {
