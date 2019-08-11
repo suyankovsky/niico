@@ -370,7 +370,11 @@
                             :options="viewer_mylist"
                             :value="selected_mylist_id"
                             v-model="selected_mylist_id"
+                            v-if="is_loggedin"
                         />
+                        <template v-else>
+                            （ログインすると指定できます）
+                        </template>
                     </dd>
                     <dd class="help">
                         <div class="icon"><HelpCircleIcon /></div>
@@ -605,6 +609,7 @@
             }),
             ...mapGetters({
                 player_size: 'setting/player_size',
+                is_loggedin: 'status/is_loggedin',
             }),
             ...ModelsMixins,
         },

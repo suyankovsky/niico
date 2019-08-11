@@ -51,23 +51,22 @@
 
         <dl>
             <dt>リリース履歴</dt>
-            <dd>
+            <dd class="releaseHistory">
                 <ul>
-                    <li>
-                        <a href="https://ch.nicovideo.jp/article/ar1681485" target="_blank">
-                        v.1.0(2018/10/8)
-                        </a>
-                        : 初回リリース。
-                    </li>
-                    <li>
-                        <a href="https://ch.nicovideo.jp/article/ar1681485" target="_blank">
-                            v.2.0(2019/6/23)
-                        </a>
-                        : コードベースを書き直したリリース。
-                    </li>
-                    <li>
-                        v.2.1(2019/7/28)
-                        : 反転機能を追加。デザインの微修正。
+                    <li v-for="ver in release_history">
+                        <template v-if="ver.hasOwnProperty('detail_url') && ver.detail_url !== ''">
+                            <a :href="ver.detail_url" target="_blank">
+                                v{{ver.version}}（{{ver.date}}）
+                            </a>
+                        </template>
+                        <template v-else>
+                            v{{ver.version}}（{{ver.date}}）
+                        </template>
+                        <ul>
+                            <li v-for="point in ver.points">
+                                ● {{point}}
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </dd>
@@ -108,20 +107,42 @@
                 height: 100px;
             }
         }
+
+        .releaseHistory {
+            > ul {
+                line-height: 1.6;
+
+                > li {
+                    padding: 16px 0;
+                    &:not(:first-child) {
+                        border-top: solid 1px #333;
+                    }
+
+                    ul {
+                        margin-left: 16px;
+
+                        li {
+                            padding-top: 16px;
+                        }
+                    }
+                }
+            }
+        }
     }
 </style>
 
 <script>
     import NiicoIcon from 'img/niico/niico_bordered.svg';
+    import release_history from 'js/content/map/release-history.js';
+
     export default {
         components: {
             NiicoIcon,
         },
-        computed: {
-        },
-        filters: {
-        },
-        methods: {
+        data() {
+            return {
+                release_history,
+            };
         },
     }
 </script>

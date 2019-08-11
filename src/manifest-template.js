@@ -1,7 +1,7 @@
-{
+export default {
     "manifest_version": 2,
     "name": "niico",
-    "version": "2.2",
+    "version": "*****更新履歴を元に書き換えられる*****",
     "description": "ニコニコ動画で動画をザッピングできるプレイヤーが立ち上がるChrome拡張機能。動画リンクをクリックすると起動します。ランキングや検索結果は勿論、コミュニティなどニコニコ動画のサブドメイン下ならどこでも起動します。",
     "permissions": [
         "http://*/*",
@@ -35,9 +35,7 @@
         }
     ],
     "background": {
-        "scripts": [
-            "dist/background.js"
-        ],
+        "scripts": ["dist/background.js"],
         "persistent": false
     },
     "web_accessible_resources": [

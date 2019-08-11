@@ -28,20 +28,17 @@ export default class {
         return this.byString(location.pathname);
     }
 
-    // ニコニ広告のリンク（jQueryオブジェクト）から抜き出す
+    // ニコニ広告のリンクから抜き出す
     static byNicoAdAnchor($anchor) {
-        // サムネのURLから無理やり抜くので動かないパターンありそう
-        const src = $anchor.find('.thumb').attr('src');
-        const re = /\/\/tn\.smilevideo\.jp\/smile\?i=([0-9]+)\./;
-        const video_id = (src.match(re))[1];
+        // 正規表現で無理やり抜き出す
+        const re = /thumbnails\/([0-9]+)\//;
+        const str = $anchor.html();
+        const result = str.match(re);
+        if(result && result.length > 1) return result[1];
 
-        if(!video_id) {
-            misc.pushLog('ERROR_PARSE_NICOAD_VIDEO_ID');
-            return false;
-        }
-
-        // smじゃなかったらしぬけどしらなーい
-        return 'sm' + video_id;
+        // idが抜けなかったらログ出すけど遷移しちゃうから意味ないんだよもん
+        misc.pushLog('ERROR_PARSE_NICOAD_VIDEO_ID');
+        return false;
     }
 
     // リンク（jQueryオブジェクト）から抜き出す
@@ -55,7 +52,10 @@ export default class {
         if(Validate.isWatchUri(string)) {
             return this.byString(string);
         } else if(Validate.isNicoAdUri(string)) {
-            return this.byNicoAdAnchor($anchor);
+            const result = this.byNicoAdAnchor($anchor);
+
+            // smじゃなかったらしぬけどしらなーい（ヘッタクソな絵）
+            if(result) return 'sm' + result;
         }
 
         return false;

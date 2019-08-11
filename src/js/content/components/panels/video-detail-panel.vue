@@ -79,6 +79,25 @@
             </div>
 
             <div class="description" v-html="video.description"></div>
+
+            <hr />
+
+            <ul class="metaInformations">
+                <li v-if="prefixed_id">
+                    動画ID： {{prefixed_id}}
+                    <a :href="'https://www.nicovideo.jp/watch/' + prefixed_id" target="_blank">
+                        （https://www.nicovideo.jp/watch/{{prefixed_id}}）
+                    </a>
+                </li>
+                <li v-if="thread_id">
+                    スレッドID： {{thread_id}}
+                    <a :href="'https://www.nicovideo.jp/watch/' + thread_id" target="_blank">
+                        （https://www.nicovideo.jp/watch/{{thread_id}}）
+                    </a>
+                </li>
+            </ul>
+
+            
         </template>
     </div>
 </template>
@@ -97,7 +116,7 @@
         }
 
         .count {
-            color: #666;
+            color: #999;
             margin: 8px 0 16px;
 
             li {
@@ -110,7 +129,7 @@
 
                 svg {
                     display: inline;
-                    fill: #555;
+                    fill: #777;
                     margin-right: 6px;
                     width: 12px;
                     height: 12px;
@@ -207,7 +226,7 @@
 
                 .postedDate {
                     font-size: 10px;
-                    color: #666;
+                    color: #999;
                 }
 
                 &--is_notPublic {
@@ -221,6 +240,20 @@
 
         .description {
             margin: 16px 0 0 40px;
+        }
+
+        .metaInformations {
+            a {
+                color: #2a7df6;
+                display: inline-block;
+                word-break: break-all;
+                font-size: 11px;
+            }
+
+            li {
+                color: #999;
+                margin: 12px 0;
+            }
         }
     }
 </style>
@@ -263,6 +296,16 @@
             },
             is_horizontal_scroll: function() {
                 return this.setting.is_horizontal_scroll;
+            },
+            prefixed_id() {
+                return this.video.original_data.video.id || this.video_id;
+            },
+            thread_id() {
+                if(this.video.is_channel) {
+                    return this.video.original_data.thread.ids.community;
+                }
+
+                return this.video.original_data.thread.ids.default;
             },
         },
         filters: {

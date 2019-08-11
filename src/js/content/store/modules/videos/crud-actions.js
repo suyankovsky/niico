@@ -50,6 +50,7 @@ export default {
                     video_id,
                     data: res.api_data,
                 });
+                commit('status/setUserId', res.api_data.viewer.id, { root: true});
                 commit('status/activateVideo', video_id, { root: true });
                 dispatch('viewerMylist/getViewerMylistgroup', state.items[video_id].use_thread_id, {root: true});
             },
