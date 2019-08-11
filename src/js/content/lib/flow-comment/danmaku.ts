@@ -10,7 +10,7 @@ export default class {
     }
 
     isAlwaysDanmakuMode() {
-        if(
+        if (
             window.niico.$store.state.setting
             && window.niico.$store.state.setting.hasOwnProperty('is_always_danmaku_mode')
         ) {
@@ -22,16 +22,16 @@ export default class {
     update() {
         const comment_count = this.stage.children
             .map(layer => layer.children.length)
-            .reduce((amount, count) => amount +count);
+            .reduce((amount, count) => amount + count);
 
         let value = false;
-        if(comment_count > this.threshold_danmaku_mode || this.isAlwaysDanmakuMode()) {
+        if (comment_count > this.threshold_danmaku_mode || this.isAlwaysDanmakuMode()) {
             value = true;
         }
 
         this.stage.children.forEach(layer => {
             layer.children.forEach(c => {
-                if(c.is_danmaku === false) return;
+                if (c.is_danmaku === false) return;
                 c.is_danmaku = value;
             })
         })

@@ -7,7 +7,7 @@
             :style="[{width: player_size.w}, {height: player_size.h}]"
         >
             <Player
-                v-for="(video, video_id, index) in videos"
+                v-for="(video, video_id) in videos"
                 v-show="status.active_video_id == video_id"
                 :key="video_id"
                 :video="video"
@@ -19,41 +19,41 @@
 </template>
 
 <script>
-    import {mapState, mapActions, mapGetters} from 'vuex';
+import { mapState, mapActions, mapGetters } from "vuex";
 
-    import Controls from 'js/content/components/side-controls.vue';
-    import Player from 'js/content/components/player.vue';
-    import Panels from 'js/content/components/panels.vue';
+import Controls from "js/content/components/side-controls.vue";
+import Player from "js/content/components/player.vue";
+import Panels from "js/content/components/panels.vue";
 
-    export default {
-        components: {
-            Controls,
-            Player,
-            Panels,
-        },
-        methods: {},
-        computed: {
-            ...mapState({
-                videos: state => state.videos.items,
-                status: state => state.status,
-            }),
-            ...mapGetters({
-                player_size: 'setting/player_size',
-                is_mini_player_mode: 'status/is_mini_player_mode',
-            })
-        },
+export default {
+    components: {
+        Controls,
+        Player,
+        Panels
+    },
+    methods: {},
+    computed: {
+        ...mapState({
+            videos: state => state.videos.items,
+            status: state => state.status
+        }),
+        ...mapGetters({
+            player_size: "setting/player_size",
+            is_mini_player_mode: "status/is_mini_player_mode"
+        })
     }
+};
 </script>
 
 <style lang="scss" scoped>
-    .niico-body {
-        display: flex;
-        overflow: hidden;
-        height: 100%;
-        width: 100%;
+.niico-body {
+    display: flex;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
 
-        .niico-player {
-            flex-shrink: 0;
-        }
+    .niico-player {
+        flex-shrink: 0;
     }
+}
 </style>

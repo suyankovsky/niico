@@ -43,7 +43,7 @@ export default class {
         this.timer = setTimeout(() => this.removeClass(), this.milliseconds);
     }
     clearRemoveTimer() {
-        if(this.timer) {
+        if (this.timer) {
             clearTimeout(this.timer);
         }
     }

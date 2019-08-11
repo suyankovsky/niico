@@ -135,11 +135,6 @@
         }
     }
 
-    body {
-        //transition-property: margin;
-        //transition-duration: .1s;
-    }
-
     // CSSリセット。カスケーディングのため詳細度を下げている。
     [id="niico"] {
         span,

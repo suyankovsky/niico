@@ -17,11 +17,11 @@ export default class {
 
     // 同期遷移する有効なURLである（JSやアンカーリンクではない）
     static isValidUri(string) {
-        if(!string) return false;
+        if (!string) return false;
 
-        if(string ==='#') return false;
+        if (string === '#') return false;
 
-        if(/^javascript:/.test(string)) return false;
+        if (/^javascript:/.test(string)) return false;
 
         return true;
     }

@@ -1,10 +1,10 @@
 export default {
     video_el() {
         const video_id = this.status.active_video_id;
-        if(!video_id) return false;
+        if (!video_id) return false;
 
         const video_el = document.getElementById(video_id);
-        if(!video_el) return false;
+        if (!video_el) return false;
 
         return video_el;
     },

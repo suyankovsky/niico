@@ -13,7 +13,7 @@ export default {
             heading: '動画情報',
             component: VideoDetailPanel
         },
-        'CommentPanel' : {
+        'CommentPanel': {
             heading: 'コメント',
             component: CommentPanel,
         },
@@ -42,7 +42,7 @@ export default {
             component: AboutPanel,
         }
     },
-    getMap: function() {
+    getMap: function () {
         const map = {};
         Object.keys(this.components).forEach(key => {
             map[key] = this.components[key]['component'];

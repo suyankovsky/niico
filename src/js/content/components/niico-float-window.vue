@@ -1,5 +1,7 @@
 <template>
-    <div id="niico-float-window" class="container"
+    <div
+        id="niico-float-window"
+        class="container"
         :class="[
             {'is-active': status.is_show_niico_float_window},
             {'is_show-help' : is_show_setting_help},
@@ -8,7 +10,9 @@
     >
         <section>
             <h1>
-                <span class="icon"><VideoIcon /></span>
+                <span class="icon">
+                    <VideoIcon />
+                </span>
                 <span class="text">動画</span>
             </h1>
             <main>
@@ -27,10 +31,10 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
-                        <div class="description">
-                            早送りまたは巻き戻しする秒数を指定します。
+                        <div class="icon">
+                            <HelpCircleIcon />
                         </div>
+                        <div class="description">早送りまたは巻き戻しする秒数を指定します。</div>
                     </dd>
                 </dl>
                 <dl>
@@ -49,10 +53,10 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
-                        <div class="description">
-                            再生速度を上下します。「↑」「↓」キーでも操作できます。
+                        <div class="icon">
+                            <HelpCircleIcon />
                         </div>
+                        <div class="description">再生速度を上下します。「↑」「↓」キーでも操作できます。</div>
                     </dd>
                 </dl>
                 <dl>
@@ -70,7 +74,9 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
+                        <div class="icon">
+                            <HelpCircleIcon />
+                        </div>
                         <div class="description">
                             動画のサイズを指定します。
                             拡張機能アイコンでniicoのオンオフを切り替えると位置がリセットされます。
@@ -86,7 +92,9 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
+                        <div class="icon">
+                            <HelpCircleIcon />
+                        </div>
                         <div class="description">
                             動画サイズをブラウザのサイズから自動で計算します。
                             ブラウザの幅・高さの1/2以下で最大になるように計算されます。
@@ -102,7 +110,9 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
+                        <div class="icon">
+                            <HelpCircleIcon />
+                        </div>
                         <div class="description">
                             動画にマウスオーバーした際に表示されるコントローラを、Chromeのデフォルトにします。代わりにniicoのコントローラは非表示にします。
                             オンにしてもなんかクリックが位置ずれしてる感じがするけど、フルスクリーンにすると戻ります（謎）。
@@ -110,9 +120,7 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt>
-                        再生終了時の処理
-                    </dt>
+                    <dt>再生終了時の処理</dt>
                     <dd>
                         <NiicoSelect
                             :options="do_on_ended_map"
@@ -121,14 +129,12 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
+                        <div class="icon">
+                            <HelpCircleIcon />
+                        </div>
                         <div class="description">
-                            <template v-if="do_on_ended == 'none'">
-                                現在視聴中の動画の再生が終わっても何もせず停止します。
-                            </template>
-                            <template v-else-if="do_on_ended == 'is_loop'">
-                                現在視聴中の動画をループ再生します。
-                            </template>
+                            <template v-if="do_on_ended == 'none'">現在視聴中の動画の再生が終わっても何もせず停止します。</template>
+                            <template v-else-if="do_on_ended == 'is_loop'">現在視聴中の動画をループ再生します。</template>
                             <template v-else-if="do_on_ended == 'is_next_video'">
                                 niicoで開いている次のタブの動画を再生します。
                                 もし他に開いている動画がない場合は、現在視聴中の動画をループ再生します。
@@ -141,7 +147,9 @@
 
         <section>
             <h1>
-                <span class="icon"><CommentIcon /></span>
+                <span class="icon">
+                    <CommentIcon />
+                </span>
                 <span class="text">コメント</span>
             </h1>
             <main>
@@ -160,7 +168,9 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
+                        <div class="icon">
+                            <HelpCircleIcon />
+                        </div>
                         <div class="description">
                             この行数に収まるようにコメントのテキストサイズが計算されます。
                             大きくするとテキストサイズは小さくなります。
@@ -182,7 +192,9 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
+                        <div class="icon">
+                            <HelpCircleIcon />
+                        </div>
                         <div class="description">
                             コメントが右端から流れ始めてから左端に消えるまでの時間の設定で、100%では4秒です。
                             200%で8秒になり、流れる速度が遅くなります。
@@ -204,10 +216,10 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
-                        <div class="description">
-                            コメントを透明にします。0%で見えなくなります。
+                        <div class="icon">
+                            <HelpCircleIcon />
                         </div>
+                        <div class="description">コメントを透明にします。0%で見えなくなります。</div>
                     </dd>
                 </dl>
                 <dl>
@@ -219,10 +231,10 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
-                        <div class="description">
-                            コメントを非表示にします。
+                        <div class="icon">
+                            <HelpCircleIcon />
                         </div>
+                        <div class="description">コメントを非表示にします。</div>
                     </dd>
                 </dl>
                 <dl>
@@ -234,7 +246,9 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
+                        <div class="icon">
+                            <HelpCircleIcon />
+                        </div>
                         <div class="description">
                             コメントパネルのコメントを自動でスクロールします。
                             コメント数が多いとカクついちゃうの辛い。
@@ -250,7 +264,9 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
+                        <div class="icon">
+                            <HelpCircleIcon />
+                        </div>
                         <div class="description">
                             コメントのサイズとタイミングから衝突判定を行い、
                             コメント同士が被らないようにする処理をしているのですが、
@@ -268,7 +284,9 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
+                        <div class="icon">
+                            <HelpCircleIcon />
+                        </div>
                         <div class="description">
                             画面に収まりきらないコメントを、別のコメントに被せてすべて表示させます。
                             オフにした場合、一定のコメント数を超えた場合のみ弾幕モードになります。
@@ -280,7 +298,9 @@
         </section>
         <section>
             <h1>
-                <span class="icon"><PanelIcon /></span>
+                <span class="icon">
+                    <PanelIcon />
+                </span>
                 <span class="text">パネル</span>
             </h1>
             <main>
@@ -293,7 +313,9 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
+                        <div class="icon">
+                            <HelpCircleIcon />
+                        </div>
                         <div class="description">
                             デバッグパネルをパネルメニューに表示します。
                             デバッグパネルからは各種変数の確認やコンソール出力ができます。
@@ -309,7 +331,9 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
+                        <div class="icon">
+                            <HelpCircleIcon />
+                        </div>
                         <div class="description">
                             ログパネルをパネルメニューに表示します。
                             あんまりログ出力設定してなくて参考にならなかったのでデフォは非表示。
@@ -317,9 +341,7 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt>
-                        動画情報パネル
-                    </dt>
+                    <dt>動画情報パネル</dt>
                     <dd>
                         <NiicoCheckbox
                             :value="is_horizontal_scroll"
@@ -328,16 +350,14 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
-                        <div class="description">
-                            動画情報パネルで動画タグを横スクロールさせます。
+                        <div class="icon">
+                            <HelpCircleIcon />
                         </div>
+                        <div class="description">動画情報パネルで動画タグを横スクロールさせます。</div>
                     </dd>
                 </dl>
                 <dl>
-                    <dt>
-                        設定と操作パネル
-                    </dt>
+                    <dt>設定と操作パネル</dt>
                     <dd>
                         <NiicoCheckbox
                             :value="is_show_setting_help"
@@ -346,7 +366,9 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
+                        <div class="icon">
+                            <HelpCircleIcon />
+                        </div>
                         <div class="description">
                             この設定パネルの補足説明を表示します。
                             こんな風に細かい説明が長いと思ったらオフにしてください。
@@ -357,14 +379,14 @@
         </section>
         <section>
             <h1>
-                <span class="icon"><SettingsIcon /></span>
+                <span class="icon">
+                    <SettingsIcon />
+                </span>
                 <span class="text">その他</span>
             </h1>
             <main>
                 <dl>
-                    <dt>
-                        マイリスト登録の追加先
-                    </dt>
+                    <dt>マイリスト登録の追加先</dt>
                     <dd>
                         <NiicoSelect
                             :options="viewer_mylist"
@@ -372,15 +394,13 @@
                             v-model="selected_mylist_id"
                             v-if="is_loggedin"
                         />
-                        <template v-else>
-                            （ログインすると指定できます）
-                        </template>
+                        <template v-else>（ログインすると指定できます）</template>
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
-                        <div class="description">
-                            サイドコントローラのマイリスト登録の追加先を指定します。
+                        <div class="icon">
+                            <HelpCircleIcon />
                         </div>
+                        <div class="description">サイドコントローラのマイリスト登録の追加先を指定します。</div>
                     </dd>
                 </dl>
                 <dl>
@@ -392,10 +412,10 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
-                        <div class="description">
-                            サイドコントローラからツイートする内容にハッシュタグ「#niico」を含めます。含めてほしいです。
+                        <div class="icon">
+                            <HelpCircleIcon />
                         </div>
+                        <div class="description">サイドコントローラからツイートする内容にハッシュタグ「#niico」を含めます。含めてほしいです。</div>
                     </dd>
                 </dl>
                 <dl>
@@ -407,7 +427,9 @@
                         />
                     </dd>
                     <dd class="help">
-                        <div class="icon"><HelpCircleIcon /></div>
+                        <div class="icon">
+                            <HelpCircleIcon />
+                        </div>
                         <div class="description">
                             「↑」「↓」キーで動画の再生スピードを操作します。
                             「←」で巻き戻し、「→」で早送りができます。
@@ -429,218 +451,214 @@
 </template>
 
 <style lang="scss" scoped>
-    .container {
-        position: fixed;
-        top: 40px;
-        bottom: 0;
-        width: 400px;
-        background: #191919;
-        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.6);
-        overflow-x: auto;
+.container {
+    position: fixed;
+    top: 40px;
+    bottom: 0;
+    width: 400px;
+    background: #191919;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.6);
+    overflow-x: auto;
 
-        transition-property: right, opacity;
-        transition-duration: .1s;
+    transition-property: right, opacity;
+    transition-duration: 0.1s;
 
-        right: -400px;
-        opacity: 0;
+    right: -400px;
+    opacity: 0;
 
-        &.is-active {
-            right: 0;
-            opacity: 1;
-        }
+    &.is-active {
+        right: 0;
+        opacity: 1;
     }
+}
 
-    svg:not(.feather) {
-        fill: #fff;
-    }
+svg:not(.feather) {
+    fill: #fff;
+}
 
-    section {
-        padding: 16px 16px 4px;
+section {
+    padding: 16px 16px 4px;
+    margin: 0 0 16px;
+    border-radius: 8px;
+
+    h1 {
         margin: 0 0 16px;
-        border-radius: 8px;
+        display: flex;
+        align-items: center;
 
-        h1 {
-            margin: 0 0 16px;
-            display: flex;
-            align-items: center;
-
-            .icon {
-                width: 16px;
-                height: 16px;
-                margin-right: 8px;
-            }
-
-            .text {
-                font-size: 16px;
-            }
+        .icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
         }
 
+        .text {
+            font-size: 16px;
+        }
+    }
+
+    main {
+        dl {
+            padding: 16px 8px;
+
+            dt {
+                color: #999;
+                font-size: 12px;
+                flex-grow: 1;
+                padding: 0;
+                margin-bottom: 4px;
+                display: flex;
+                justify-content: space-between;
+
+                var {
+                    color: #fff;
+                }
+            }
+
+            dd {
+                flex-grow: 1;
+                display: flex;
+                align-items: center;
+
+                .slider {
+                    flex-grow: 1;
+                }
+                .value {
+                    width: 60px;
+                    text-align: right;
+                    font-size: 14px;
+                }
+
+                .buttons {
+                    display: flex;
+                    flex-grow: 1;
+
+                    .button {
+                        margin: 8px 8px 0 0;
+                    }
+                }
+            }
+
+            .help {
+                display: none;
+            }
+        }
+    }
+}
+
+section.buttonGroup {
+    .button {
+        margin-bottom: 16px;
+    }
+}
+
+.is_show-help {
+    section {
         main {
             dl {
-                padding: 16px 8px;
-
-                dt {
-                    color: #999;
-                    font-size: 12px;
-                    flex-grow: 1;
-                    padding: 0;
-                    margin-bottom: 4px;
-                    display: flex;
-                    justify-content: space-between;
-
-                    span {
-
-                    }
-
-                    var {
-                        color: #fff;
-                    }
-                }
-
-                dd {
-                    flex-grow: 1;
-                    display: flex;
-                    align-items: center;
-
-                    .slider {
-                        flex-grow: 1;
-                    }
-                    .value {
-                        width: 60px;
-                        text-align: right;
-                        font-size: 14px;
-                    }
-
-                    .buttons {
-                        display: flex;
-                        flex-grow: 1;
-
-                        .button {
-                            margin: 8px 8px 0 0;
-                        }
-                    }
-                }
-
                 .help {
-                    display: none;
-                }
-            }
-        }
-    }
+                    display: flex;
+                    align-items: flex-start;
+                    margin: 8px 0 0 0;
 
-    section.buttonGroup {
-        .button {
-            margin-bottom: 16px;
-        }
-    }
-
-    .is_show-help {
-        section {
-            main {
-                dl {
-                    .help {
-                        display: flex;
-                        align-items: flex-start;
-                        margin: 8px 0 0 0;
-
-                        .icon {
-                            width: 12px;
-                            height: 12px;
-                            flex-shrink: 0;
-                            margin-top: 4px;
-                            color: #666;
-                        }
-                        .description {
-                            font-size: 12px;
-                            color: #666;
-                            margin-left: 8px;
-                            line-height: 1.5;
-                        }
+                    .icon {
+                        width: 12px;
+                        height: 12px;
+                        flex-shrink: 0;
+                        margin-top: 4px;
+                        color: #666;
+                    }
+                    .description {
+                        font-size: 12px;
+                        color: #666;
+                        margin-left: 8px;
+                        line-height: 1.5;
                     }
                 }
             }
         }
     }
+}
 </style>
 
 <script>
-    import {mapState, mapActions, mapGetters, mapMutations} from 'vuex';
-    import do_on_ended_map from 'js/content/map/do_on_ended.ts';
-    import FormatHelper from 'js/content/lib/format-helper.ts';
+import { mapState, mapActions, mapGetters, mapMutations } from "vuex";
+import do_on_ended_map from "js/content/map/do_on_ended.ts";
+import FormatHelper from "js/content/lib/format-helper.ts";
 
-    import InputHorizontalRange from 'js/content/components/common/form/input-range-horizontal.vue';
-    import NiicoSelect from 'js/content/components/common/form/input-select.vue';
-    import NiicoCheckbox from 'js/content/components/common/form/input-checkbox.vue';
+import InputHorizontalRange from "js/content/components/common/form/input-range-horizontal.vue";
+import NiicoSelect from "js/content/components/common/form/input-select.vue";
+import NiicoCheckbox from "js/content/components/common/form/input-checkbox.vue";
 
-    import HelpCircleIcon from 'img/feather/help-circle.svg';
-    import VideoIcon from 'img/feather/film.svg';
-    import CommentIcon from 'img/nicovideo/comment.svg';
-    import SettingsIcon from 'img/feather/settings.svg';
-    import SeekBackward from 'img/feather/skip-back.svg';
-    import SeekForward from 'img/feather/skip-forward.svg';
-    import UpPlayBackRateIcon from 'img/feather/chevrons-up.svg';
-    import DownPlayBackRateIcon from 'img/feather/chevrons-down.svg';
-    import PanelIcon from 'img/feather/sidebar.svg';
+import HelpCircleIcon from "img/feather/help-circle.svg";
+import VideoIcon from "img/feather/film.svg";
+import CommentIcon from "img/nicovideo/comment.svg";
+import SettingsIcon from "img/feather/settings.svg";
+import SeekBackward from "img/feather/skip-back.svg";
+import SeekForward from "img/feather/skip-forward.svg";
+import UpPlayBackRateIcon from "img/feather/chevrons-up.svg";
+import DownPlayBackRateIcon from "img/feather/chevrons-down.svg";
+import PanelIcon from "img/feather/sidebar.svg";
 
-    import ModelsMixins from 'js/content/mixins/form-models.ts';
+import ModelsMixins from "js/content/mixins/form-models.ts";
 
-    export default {
-        components: {
-            InputHorizontalRange,
-            HelpCircleIcon,
-            VideoIcon,
-            CommentIcon,
-            NiicoSelect,
-            NiicoCheckbox,
-            SettingsIcon,
-            SeekBackward,
-            SeekForward,
-            UpPlayBackRateIcon,
-            DownPlayBackRateIcon,
-            PanelIcon,
+export default {
+    components: {
+        InputHorizontalRange,
+        HelpCircleIcon,
+        VideoIcon,
+        CommentIcon,
+        NiicoSelect,
+        NiicoCheckbox,
+        SettingsIcon,
+        SeekBackward,
+        SeekForward,
+        UpPlayBackRateIcon,
+        DownPlayBackRateIcon,
+        PanelIcon
+    },
+    computed: {
+        ...mapState({
+            videos: state => state.videos.items,
+            video: state => state.videos.items[state.status.active_video_id],
+            status: state => state.status,
+            setting: state => state.setting,
+            viewerMylist: state => state.viewerMylist.items
+        }),
+        ...mapGetters({
+            player_size: "setting/player_size",
+            is_loggedin: "status/is_loggedin"
+        }),
+        ...ModelsMixins
+    },
+    filters: {
+        toPercentage: num => {
+            return Math.round(num * 100);
         },
-        computed: {
-            ...mapState({
-                videos: state => state.videos.items,
-                video: state => state.videos.items[state.status.active_video_id],
-                status: state => state.status,
-                setting: state => state.setting,
-                viewerMylist: state => state.viewerMylist.items,
-            }),
-            ...mapGetters({
-                player_size: 'setting/player_size',
-                is_loggedin: 'status/is_loggedin',
-            }),
-            ...ModelsMixins,
-        },
-        filters: {
-            toPercentage: num => {
-                return Math.round(num * 100);
-            },
-            playbackRateFormat: function(rate) {
-                return Number(rate).toFixed(2);
-            },
-        },
-        created() {
-            this.$store.dispatch('status/addEventListenerDoCloseNiicoFloatWindow');
-        },
-        methods: {
-            ...mapActions({
-                upPlaybackRate: 'status/upPlaybackRate',
-                downPlaybackRate: 'status/downPlaybackRate',
-            }),
-            ...mapMutations({
-                toggleIsShowNiicoFloatWindow: 'status/toggleIsShowNiicoFloatWindow',
-            }),
-            initialize() {
-                this.$store.commit('setting/initialize');
-                this.$store.commit('status/initialize');
-            },
-        },
-        data() {
-            return {
-                do_on_ended_map,
-            }
-        },
+        playbackRateFormat: function(rate) {
+            return Number(rate).toFixed(2);
+        }
+    },
+    created() {
+        this.$store.dispatch("status/addEventListenerDoCloseNiicoFloatWindow");
+    },
+    methods: {
+        ...mapActions({
+            upPlaybackRate: "status/upPlaybackRate",
+            downPlaybackRate: "status/downPlaybackRate"
+        }),
+        ...mapMutations({
+            toggleIsShowNiicoFloatWindow: "status/toggleIsShowNiicoFloatWindow"
+        }),
+        initialize() {
+            this.$store.commit("setting/initialize");
+            this.$store.commit("status/initialize");
+        }
+    },
+    data() {
+        return {
+            do_on_ended_map
+        };
     }
+};
 </script>

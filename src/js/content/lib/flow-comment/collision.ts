@@ -5,12 +5,12 @@ export default class {
 
     // 点a,bからなる線分と、点c,dからなる線分が交差しているかどうか調べる関数
     static isCollisionLines(a, b, c, d) {
-      var ta = (c.x - d.x) * (a.y - c.y) + (c.y - d.y) * (c.x - a.x);
-      var tb = (c.x - d.x) * (b.y - c.y) + (c.y - d.y) * (c.x - b.x);
-      var tc = (a.x - b.x) * (c.y - a.y) + (a.y - b.y) * (a.x - c.x);
-      var td = (a.x - b.x) * (d.y - a.y) + (a.y - b.y) * (a.x - d.x);
+        var ta = (c.x - d.x) * (a.y - c.y) + (c.y - d.y) * (c.x - a.x);
+        var tb = (c.x - d.x) * (b.y - c.y) + (c.y - d.y) * (c.x - b.x);
+        var tc = (a.x - b.x) * (c.y - a.y) + (a.y - b.y) * (a.x - c.x);
+        var td = (a.x - b.x) * (d.y - a.y) + (a.y - b.y) * (a.x - d.x);
 
-      return tc * td < 0 && ta * tb < 0;
+        return tc * td < 0 && ta * tb < 0;
     };
 
     // コメントとコメントが衝突する場合trueになる関数

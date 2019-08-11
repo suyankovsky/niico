@@ -1,11 +1,13 @@
 <template>
     <div class="error-notification">
-        <div class="image"><NiicoIcon /></div>
+        <div class="image">
+            <NiicoIcon />
+        </div>
         <h1>エラーが発生しました。</h1>
         <main>
             <div class="reasons">
                 <template v-for="reason in cannot_render_video_html_reasons">
-                    <div class="reason">
+                    <div class="reason" :key="reason.code">
                         <p class="error-message">{{reason.message}}</p>
                         <p class="error-code">エラーコード：{{reason.code}}</p>
                     </div>
@@ -15,9 +17,7 @@
                 <div class="reload" @click="fetchVideo(video_id)">
                     <span>再読み込み</span>
                 </div>
-                <div class="openNicoVideo" @click="openNicoVideo">
-                    ニコニコ動画で開く
-                </div>
+                <div class="openNicoVideo" @click="openNicoVideo">ニコニコ動画で開く</div>
             </div>
         </main>
     </div>
@@ -96,7 +96,7 @@
                 width: 50%;
 
                 &:hover {
-                    opacity: .8;
+                    opacity: 0.8;
                 }
             }
 
@@ -110,35 +110,33 @@
 </style>
 
 <script>
-    import {mapState, mapActions, mapGetters} from 'vuex';
-    import NiicoIcon from 'img/niico/niico_bordered.svg';
+import { mapState, mapActions, mapGetters } from "vuex";
+import NiicoIcon from "img/niico/niico_bordered.svg";
 
-    export default {
-        props: [
-            'video',
-            'video_id',
-        ],
-        components: {
-            NiicoIcon,
-        },
-        watch: {
-        },
-        computed: {
-            ...mapState({
-                videos: state => state.videos.items,
-                status: state => state.status,
-                setting: state => state.setting,
-            }),
-            cannot_render_video_html_reasons: function() {
-                return this.$store.getters['videos/cannot_render_video_html_reasons'](this.video_id);
-            },
-        },
-        methods: {
-            ...mapActions({
-                fetchVideo: 'videos/fetchVideo',
-                openNicoVideo: 'videos/openNicoVideo',
-                openTweet: 'videos/openTweet',
-            }),
-        },
+export default {
+    props: ["video", "video_id"],
+    components: {
+        NiicoIcon
+    },
+    watch: {},
+    computed: {
+        ...mapState({
+            videos: state => state.videos.items,
+            status: state => state.status,
+            setting: state => state.setting
+        }),
+        cannot_render_video_html_reasons: function() {
+            return this.$store.getters[
+                "videos/cannot_render_video_html_reasons"
+            ](this.video_id);
+        }
+    },
+    methods: {
+        ...mapActions({
+            fetchVideo: "videos/fetchVideo",
+            openNicoVideo: "videos/openNicoVideo",
+            openTweet: "videos/openTweet"
+        })
     }
+};
 </script>

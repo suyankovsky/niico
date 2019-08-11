@@ -10,13 +10,13 @@ export default class extends Createjs.Container {
 
     update(current_time) {
         const current_thread = this.thread.filter(c => {
-            if(c.isFlushTarget(current_time)) {
-                if(!c.stage) {
+            if (c.isFlushTarget(current_time)) {
+                if (!c.stage) {
                     this.addChild(c);
                 }
                 return true;
             } else {
-                if(c.stage) {
+                if (c.stage) {
                     this.removeChild(c);
                 }
                 return false;
