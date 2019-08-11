@@ -8,8 +8,11 @@ import App from 'js/content/components/app.vue';
 $('body').prepend(`<div id="niico-loading-bar"></div>`);
 $('body').append(`<div id="niico-app"></div>`);
 
-window.niico =  new Vue({
+window.niico = new Vue({
     el: '#niico-app',
     store,
     render: h => h(App),
 });
+
+interface Window { niico: any }
+declare var window: Window;
