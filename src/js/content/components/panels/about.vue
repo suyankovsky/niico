@@ -51,23 +51,39 @@
 
         <dl>
             <dt>リリース履歴</dt>
-            <dd>
+            <dd class="releaseHistory">
                 <ul>
                     <li>
                         <a href="https://ch.nicovideo.jp/article/ar1681485" target="_blank">
-                        v.1.0(2018/10/8)
+                        v1.0(2018/10/8)
                         </a>
-                        : 初回リリース。
+                        <ul>
+                            <li>初回リリース。</li>
+                        </ul>
                     </li>
                     <li>
                         <a href="https://ch.nicovideo.jp/article/ar1681485" target="_blank">
-                            v.2.0(2019/6/23)
+                            v2.0(2019/6/23)
                         </a>
-                        : コードベースを書き直したリリース。
+                        <ul>
+                            <li>
+                                全面的に変えた。
+                            </li>
+                        </ul>
                     </li>
                     <li>
-                        v.2.1(2019/7/28)
-                        : 反転機能を追加。デザインの微修正。
+                        v2.1(2019/7/28)
+                        <ul>
+                            <li>動画の反転機能を追加。デザインの微修正。</li>
+                        </ul>
+                    </li>
+                    <li>
+                        v2.2(2019/8/12)
+                        <ul>
+                            <li>動画情報パネルで、動画IDとスレッドIDを表示するようにした（パネル最下部）</li>
+                            <li>非ログイン時で見れないところを塞いだ（視聴履歴・ニコレポ・マイリスト登録ボタンなど）</li>
+                            <li>動画情報パネルの文字色等々、一部見づらかった場所のコントラストを高くした</li>
+                        </ul>
                     </li>
                 </ul>
             </dd>
@@ -106,6 +122,27 @@
             svg {
                 width: 100px;
                 height: 100px;
+            }
+        }
+
+        .releaseHistory {
+            > ul {
+                line-height: 1.6;
+
+                > li {
+                    padding: 16px 0;
+                    &:not(:first-child) {
+                        border-top: solid 1px #333;
+                    }
+
+                    ul {
+                        margin-left: 16px;
+
+                        li {
+                            padding-top: 16px;
+                        }
+                    }
+                }
             }
         }
     }
