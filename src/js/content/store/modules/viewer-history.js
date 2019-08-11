@@ -12,8 +12,8 @@ const state = {
 };
 
 const getters = {
-    histories: (state, getters, rootState) => {
-        if(!rootState.status.is_loggedin) {
+    histories: (state, getters, rootState, rootGetters) => {
+        if(!rootGetters['status/is_loggedin']) {
             return {
                 code: -4,
                 content: 'ログインしてください。',
