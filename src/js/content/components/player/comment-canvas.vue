@@ -33,9 +33,9 @@
     import $ from 'jquery';
     import {mapState, mapGetters} from 'vuex';
 
-    import ajaxApi from 'js/content/lib/ajax-api.js';
-    import flowManager from 'js/content/lib/flow-comment/manager.js';
-    import misc from 'js/content/lib/misc.js';
+    import ajaxApi from 'js/content/lib/ajax-api.ts';
+    import flowManager from 'js/content/lib/flow-comment/manager.ts';
+    import misc from 'js/content/lib/misc.ts';
 
     export default {
         props: [

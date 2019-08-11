@@ -128,8 +128,8 @@
     import Moment from 'moment';
 
     import {mapState, mapActions, mapGetters} from 'vuex';
-    import FormatHelper from 'js/content/lib/format-helper.js';
-    import sort_choices from 'js/content/map/comment-sort-choices.js';
+    import FormatHelper from 'js/content/lib/format-helper.ts';
+    import sort_choices from 'js/content/map/comment-sort-choices.ts';
 
     import NiicoSelect from 'js/content/components/common/form/input-select.vue';
     import NiicoCheckbox from 'js/content/components/common/form/input-checkbox.vue';

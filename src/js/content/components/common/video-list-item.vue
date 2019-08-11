@@ -95,7 +95,7 @@
 <script>
     import {mapState} from 'vuex';
     import Moment from 'moment';
-    import FormatHelper from 'js/content/lib/format-helper.js';
+    import FormatHelper from 'js/content/lib/format-helper.ts';
 
     export default {
         components: {

@@ -16,7 +16,7 @@
 <script>
     import $ from 'jquery';
     import {mapState, mapGetters} from 'vuex';
-    import ChromeHelper from 'js/content/lib/chrome-helper.js';
+    import ChromeHelper from 'js/content/lib/chrome-helper.ts';
 
     import NiicoHeader from 'js/content/components/niico-header.vue';
     import NiicoBody from 'js/content/components/niico-body.vue';

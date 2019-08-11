@@ -565,8 +565,8 @@
 
 <script>
     import {mapState, mapActions, mapGetters, mapMutations} from 'vuex';
-    import do_on_ended_map from 'js/content/map/do_on_ended.js';
-    import FormatHelper from 'js/content/lib/format-helper.js';
+    import do_on_ended_map from 'js/content/map/do_on_ended.ts';
+    import FormatHelper from 'js/content/lib/format-helper.ts';
 
     import InputHorizontalRange from 'js/content/components/common/form/input-range-horizontal.vue';
     import NiicoSelect from 'js/content/components/common/form/input-select.vue';
@@ -582,7 +582,7 @@
     import DownPlayBackRateIcon from 'img/feather/chevrons-down.svg';
     import PanelIcon from 'img/feather/sidebar.svg';
 
-    import ModelsMixins from 'js/content/mixins/form-models.js';
+    import ModelsMixins from 'js/content/mixins/form-models.ts';
 
     export default {
         components: {

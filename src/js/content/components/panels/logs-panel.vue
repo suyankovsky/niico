@@ -93,7 +93,7 @@
     import $ from 'jquery';
     import Moment from 'moment';
     import {mapState, mapActions, mapGetters} from 'vuex';
-    import FormatHelper from 'js/content/lib/format-helper.js';
+    import FormatHelper from 'js/content/lib/format-helper.ts';
 
     export default {
         computed: {

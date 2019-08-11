@@ -261,7 +261,7 @@
 <script>
     import Moment from 'moment';
     import {mapState, mapActions, mapGetters} from 'vuex';
-    import FormatHelper from 'js/content/lib/format-helper.js';
+    import FormatHelper from 'js/content/lib/format-helper.ts';
 
     import NicoDicOnIcon from 'img/nicovideo/nico-dic-available.svg';
     import NicoDicOffIcon from 'img/nicovideo/nico-dic-unavailable.svg';

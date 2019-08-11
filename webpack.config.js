@@ -2,8 +2,8 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: {
-        content: './src/js/content/entry.js',
-        background: './src/js/background/entry.js',
+        content: './src/js/content/entry.ts',
+        background: './src/js/background/entry.ts',
     },
     output: {
         filename: '[name].js',
@@ -29,6 +29,11 @@ module.exports = {
                 }
             },
             {
+                test: /\.ts/,
+                exclude: /node_modules/,
+                loader: 'ts-loader',
+            },
+            {
                 test: /\.js/,
                 exclude: /node_modules/,
                 loader: 'babel-loader',
@@ -40,7 +45,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.js', '.vue'],
+        extensions: ['.js', '.vue', '.ts'],
         modules: [
             "node_modules",
             "src/"

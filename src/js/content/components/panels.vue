@@ -19,7 +19,7 @@
 <script>
     import Vue from 'vue';
     import {mapMutations,mapState, mapActions, mapGetters} from 'vuex';
-    import panel_map from 'js/content/map/panel-map.js';
+    import panel_map from 'js/content/map/panel-map.ts';
 
     export default {
         components: {

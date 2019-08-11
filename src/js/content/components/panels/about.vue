@@ -133,7 +133,7 @@
 
 <script>
     import NiicoIcon from 'img/niico/niico_bordered.svg';
-    import release_history from 'js/content/map/release-history.js';
+    import release_history from 'js/content/map/release-history.ts';
 
     export default {
         components: {

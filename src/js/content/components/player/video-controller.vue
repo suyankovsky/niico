@@ -503,9 +503,9 @@ import $ from 'jquery';
     import InputHorizontalRange from 'js/content/components/common/form/input-range-horizontal.vue';
     import InputVerticalRange from 'js/content/components/common/form/input-range-vertical.vue';
 
-    import VideoMisc from 'js/content/lib/video-misc.js'
-    import FormatHelper from 'js/content/lib/format-helper.js';
-    import do_on_ended_map from 'js/content/map/do_on_ended.js';
+    import VideoMisc from 'js/content/lib/video-misc.ts'
+    import FormatHelper from 'js/content/lib/format-helper.ts';
+    import do_on_ended_map from 'js/content/map/do_on_ended.ts';
 
     import PlayIcon from 'img/nicovideo/play.svg';
     import PauseIcon from 'img/nicovideo/pause.svg';
@@ -522,8 +522,8 @@ import $ from 'jquery';
     import ExternalLinkIcon from 'img/feather/external-link.svg';
     import SlidersIcon from 'img/feather/sliders.svg';
 
-    import ModelsMixins from 'js/content/mixins/form-models.js';
-    import DelayedDisplayControl from 'js/content/lib/delayed-display-control.js';
+    import ModelsMixins from 'js/content/mixins/form-models.ts';
+    import DelayedDisplayControl from 'js/content/lib/delayed-display-control.ts';
 
     export default {
         props: [

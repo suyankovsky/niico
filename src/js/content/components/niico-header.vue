@@ -36,7 +36,7 @@
 
 <script>
     import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
-    import MoveMiniPlayer from 'js/content/mixins/move-mini-player.js';
+    import MoveMiniPlayer from 'js/content/mixins/move-mini-player.ts';
     import Tab from 'js/content/components/tab.vue';
 
     import closeIcon from 'img/feather/x.svg';

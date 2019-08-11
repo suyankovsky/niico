@@ -53,7 +53,7 @@ const complieJsCore = (is_production) => {
     const env = is_production ? 'production' : 'development';
     const dist = is_production ? './production/dist/' : './dist/';
 
-    return gulp.src('./src/**/*.js')
+    return gulp.src('./src/**/*.ts')
         .pipe(plumber({
             errorHandler: notify.onError("Error: <%= error.message %>")
         }))
@@ -81,12 +81,14 @@ gulp.task('compile', gulp.series('clean', 'compile:js', 'compile:sass', () => {
 
 // maninfest.jsonの更新
 import fs from 'fs';
-import history from './src/js/content/map/release-history.js';// 更新履歴
-import template from './src/manifest-template.js';// 雛形
+import history from './src/js/content/map/release-history.ts';// 更新履歴
+import template from './src/manifest-template.ts';// 雛形
 gulp.task('updateManifest', (done) => {
     // 更新履歴をもとにバージョンを書き換える
     template.version = history[0].version;
     const output = JSON.stringify(template, null, '    ') + '\n';
+
+    console.log('version: ' + template.version);
 
     // ファイルの書き込み
     fs.writeFile(
@@ -105,7 +107,7 @@ gulp.task('updateManifest', (done) => {
 // WATCH
 gulp.task('watch', () => {
     return gulp.watch(
-        ['./src/**/*.js', './src/**/*.vue', './src/css/**/*.scss'],
+        ['./src/**/*.ts', './src/**/*.vue', './src/css/**/*.scss'],
         gulp.series(
             'compile',
             'updateManifest',
