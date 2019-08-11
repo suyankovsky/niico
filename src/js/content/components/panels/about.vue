@@ -53,37 +53,19 @@
             <dt>リリース履歴</dt>
             <dd class="releaseHistory">
                 <ul>
-                    <li>
-                        <a href="https://ch.nicovideo.jp/article/ar1681485" target="_blank">
-                        v1.0(2018/10/8)
-                        </a>
+                    <li v-for="ver in release_history">
+                        <template v-if="ver.hasOwnProperty('detail_url') && ver.detail_url !== ''">
+                            <a :href="ver.detail_url" target="_blank">
+                                v{{ver.version}}（{{ver.date}}）
+                            </a>
+                        </template>
+                        <template v-else>
+                            v{{ver.version}}（{{ver.date}}）
+                        </template>
                         <ul>
-                            <li>初回リリース。</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="https://ch.nicovideo.jp/article/ar1681485" target="_blank">
-                            v2.0(2019/6/23)
-                        </a>
-                        <ul>
-                            <li>
-                                全面的に変えた。
+                            <li v-for="point in ver.points">
+                                ● {{point}}
                             </li>
-                        </ul>
-                    </li>
-                    <li>
-                        v2.1(2019/7/28)
-                        <ul>
-                            <li>動画の反転機能を追加。デザインの微修正。</li>
-                        </ul>
-                    </li>
-                    <li>
-                        v2.2(2019/8/12)
-                        <ul>
-                            <li>ニコニ広告のリンクからうまくプレイヤーを起動できない不具合を修正</li>
-                            <li>動画情報パネルで、動画IDとスレッドIDを表示するようにした（パネル最下部）</li>
-                            <li>非ログイン時で見れないところを塞いだ（視聴履歴・ニコレポ・マイリスト登録ボタンなど）</li>
-                            <li>動画情報パネルの文字色等々、一部見づらかった場所のコントラストを高くした</li>
                         </ul>
                     </li>
                 </ul>
@@ -151,15 +133,16 @@
 
 <script>
     import NiicoIcon from 'img/niico/niico_bordered.svg';
+    import release_history from 'js/content/map/release-history.js';
+
     export default {
         components: {
             NiicoIcon,
         },
-        computed: {
-        },
-        filters: {
-        },
-        methods: {
+        data() {
+            return {
+                release_history,
+            };
         },
     }
 </script>
