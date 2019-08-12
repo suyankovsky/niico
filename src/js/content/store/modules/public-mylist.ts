@@ -2,7 +2,7 @@
 
 import Vue from 'vue';
 import ajaxApi from 'js/content/lib/ajax-api.ts';
-import PublicMylistdetail from 'js/content/store/interface/public-mylist-detail.ts'
+import PublicMylistdetail from 'js/content/store/parser/public-mylist-detail.ts'
 
 const state = {
     items: {},

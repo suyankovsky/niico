@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import WatchApiDataVideo from 'js/content/store/interface/watch-api-data-video.ts';
+import WatchApiDataVideo from 'js/content/store/parser/watch-api-data-video.ts';
 import load_status_map from 'js/content/map/load-status.ts';
 
 // ここだけTSで書きたい。つらい。

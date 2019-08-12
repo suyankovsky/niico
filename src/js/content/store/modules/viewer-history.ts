@@ -2,7 +2,7 @@
 
 import Vue from 'vue';
 import ajaxApi from 'js/content/lib/ajax-api.ts';
-import ViewerHistoryList from 'js/content/store/interface/viewer-history-list.ts';
+import ViewerHistoryList from 'js/content/store/parser/viewer-history-list.ts';
 
 const state = {
     items: [],
