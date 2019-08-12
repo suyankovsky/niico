@@ -7,7 +7,7 @@ export default class {
         try {
             const $responce = $(responce);
             const api_data = $responce.filter('#js-initial-watch-data').attr('data-api-data');
-            parsed_data = JSON.parse(api_data);
+            parsed_data = JSON.parse(api_data || '');
         } catch (e) {
             console.error('動画情報のパースに失敗しました: ' + e);
             return e;

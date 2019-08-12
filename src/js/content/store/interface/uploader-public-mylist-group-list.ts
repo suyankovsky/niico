@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 export default class {
     constructor(xml) {
-        const mylist_group = [];
+        const mylist_group: {}[] = [];
 
         $(xml).find('mylistgroup').each((index, el) => {
             mylist_group.push(

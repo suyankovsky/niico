@@ -13,8 +13,8 @@ export default class {
 
     static setStorage(items) {
         return new Promise((resolve) => {
-            chrome.storage.local.set(items, result => {
-                resolve(result);
+            chrome.storage.local.set(items, () => {
+                resolve(true);
             })
         })
     }

@@ -17,7 +17,10 @@ const getters = {
         return state.volume_is_mute ? 0 : state.volume;
     },
     player_size: (state, getters, rootState) => {
-        let size = {};
+        let size = {
+            w: 0,
+            h: 0,
+        };
         if (state.is_auto_player_width) {
             size = getters.auto_player_size;
         } else {

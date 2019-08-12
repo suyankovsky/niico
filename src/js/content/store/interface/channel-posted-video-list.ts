@@ -12,7 +12,7 @@ export default class {
     constructor(html) {
         const $html = $($.parseHTML(html));
 
-        const posted_video_list = [];
+        const posted_video_list: Object[] = [];
 
         $html.find('.item').each((index, el) => {
             posted_video_list.push(
@@ -46,7 +46,7 @@ export default class {
             title,
             length_in_seconds: this.computeSeconds(length_in_seconds),
             thumbnail_url,
-            upload_time: new Moment(upload_time, 'YYYY/MM/DD HH:mm').format(),
+            upload_time: Moment(upload_time, 'YYYY/MM/DD HH:mm').format(),
             view_counter: parseInt(view_counter.replace(',', '')),
             num_res: parseInt(num_res.replace(',', '')),
             mylist_counter: parseInt(mylist_counter.replace(',', '')),

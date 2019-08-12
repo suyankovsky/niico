@@ -41,14 +41,16 @@ export default {
             if (rootState.status.is_window_closed) return;
 
             // form部品にフォーカスしていたらreturn
-            const is_focus_form_parts_tag = Validate.isFormPartsTagName(document.activeElement.tagName);
+            const active_elem = document.activeElement;
+            if (!active_elem) return;
+            const is_focus_form_parts_tag = Validate.isFormPartsTagName(active_elem.tagName);
             if (is_focus_form_parts_tag) {
                 // ただし許可されていたら実行する
-                const is_allow_key_event = $(document.activeElement).attr('data-allow-key-event');
+                const is_allow_key_event = $(active_elem).attr('data-allow-key-event');
                 if (!is_allow_key_event) return;
             }
 
-            const el = document.getElementById(rootState.status.active_video_id);
+            const el = <HTMLVideoElement>document.getElementById(rootState.status.active_video_id);
             if (!el) return;
 
             switch (e.keyCode) {
@@ -72,4 +74,10 @@ export default {
             }
         });
     },
+}
+
+declare global {
+    interface Window {
+        niico: any,
+    }
 }

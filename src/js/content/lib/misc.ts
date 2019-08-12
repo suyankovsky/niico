@@ -2,7 +2,7 @@ import codes from 'js/content/map/log-code-map.ts';
 import FormatHelper from 'js/content/lib/format-helper.ts';
 
 export default class {
-    static pushLog(code, detail) {
+    static pushLog(code, detail?) {
         // supplementを多重追加してしまうのでディープコピー
         const log = this.deepCopy(codes[code]);
 
@@ -38,9 +38,9 @@ export default class {
     }
 
     // 現在有効な動画のvideo要素を返す
-    static activeVideoElement() {
+    static activeVideoElement(): HTMLVideoElement | null {
         const video_id = window.niico.$store.state.status.active_video_id;
-        return document.getElementById(video_id);
+        return <HTMLVideoElement>document.getElementById(video_id);
     }
 
     // 現在有効な動画の再生時間を変更する
@@ -53,3 +53,6 @@ export default class {
         video_el.currentTime = current_time;
     }
 }
+
+interface Window { niico: any }
+declare var window: Window;

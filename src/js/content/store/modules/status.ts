@@ -220,6 +220,7 @@ const actions = {
             return;
         }
         const el = document.getElementById('niico-player');
+        if (!el) return;
         el.webkitRequestFullscreen();
     },
     cancelFullScreenMode: ({ commit, state }) => {
@@ -245,4 +246,17 @@ export default {
     getters,
     mutations,
     actions,
+}
+
+// Chromeでの動作前提なのでこれで大丈夫でしょ
+declare global {
+    interface Document {
+        webkitRequestFullscreen: any,
+        webkitIsFullScreen: any,
+        webkitCancelFullScreen: any,
+    }
+
+    interface HTMLElement {
+        webkitRequestFullscreen: any,
+    }
 }

@@ -47,7 +47,7 @@ export default class {
         let val = 0;
         arr.forEach(
             (item, index) => {
-                val += item * Math.pow(60, index);
+                val += parseInt(item) * Math.pow(60, index);
             }
         );
 
@@ -103,34 +103,34 @@ export default class {
     }
 
     static relativeDate(datetime) {
-        const moment = new Moment(datetime);
+        const moment = Moment(datetime);
 
-        const years = moment.diff(new Moment(), "years") * -1;
+        const years = moment.diff(Moment(), "years") * -1;
         if (years > 0) {
             return `${years}年前`;
         }
 
-        const months = moment.diff(new Moment(), "months") * -1;
+        const months = moment.diff(Moment(), "months") * -1;
         if (months > 0) {
             return `${months}ヶ月前`;
         }
 
-        const weeks = moment.diff(new Moment(), "weeks") * -1;
+        const weeks = moment.diff(Moment(), "weeks") * -1;
         if (weeks > 0) {
             return `${weeks}週間前`;
         }
 
-        const days = moment.diff(new Moment(), "days") * -1;
+        const days = moment.diff(Moment(), "days") * -1;
         if (days > 0) {
             return `${days}日前`;
         }
 
-        const hours = moment.diff(new Moment(), "hours") * -1;
+        const hours = moment.diff(Moment(), "hours") * -1;
         if (hours > 0) {
             return `${hours}時間前`;
         }
 
-        const minutes = moment.diff(new Moment(), "minutes") * -1;
+        const minutes = moment.diff(Moment(), "minutes") * -1;
         if (minutes > 0) {
             return `${minutes}分前`;
         }

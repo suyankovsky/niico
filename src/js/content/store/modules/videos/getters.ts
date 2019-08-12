@@ -115,10 +115,16 @@ export default {
         ];
 
         return conditions
-            .filter(item => item.condition === true)
-            .map(item => {
+            .filter((item: Item) => item.condition === true)
+            .map((item: Item) => {
                 item.message = cannot_render_video_html_reasons_map[item.code];
                 return item;
             });
     },
+}
+
+interface Item {
+    condition: boolean,
+    code: string,
+    message?: string,
 }

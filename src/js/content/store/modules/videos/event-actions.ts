@@ -15,7 +15,7 @@ export default {
         });
     },
     onLoadedmetadata: ({ commit, rootState }, video_id) => {
-        const el = document.getElementById(video_id);
+        const el = <HTMLVideoElement>document.getElementById(video_id);
         if (!el) return;
 
         commit('setDuration', {
@@ -28,13 +28,13 @@ export default {
     },
     onTimeUpdate: ({ commit, rootState }) => {
         const video_id = rootState.status.active_video_id;
-        const el = document.getElementById(video_id);
+        const el = <HTMLVideoElement>document.getElementById(video_id);
         if (!el) return;
 
         const current_time = el.currentTime;
         const duration = el.duration;
         const bf = el.buffered;
-        const ranges = [];
+        const ranges: Object[] = [];
 
         if (!current_time || !duration || !bf || !bf.length) return;
 
@@ -44,8 +44,8 @@ export default {
             const left = start ? (start / duration * 100) : 0;
             const width = ((end - start) / duration * 100);
             ranges.push({
-                left: left,
-                width: width,
+                left,
+                width,
             });
         }
 
@@ -64,7 +64,7 @@ export default {
         if (do_on_ended == 'none') return;
 
         const video_id = rootState.status.active_video_id;
-        const video_el = document.getElementById(video_id);
+        const video_el = <HTMLVideoElement>document.getElementById(video_id);
         video_el.currentTime = 0;
         commit('setCurrentTime', {
             video_id,
@@ -80,7 +80,7 @@ export default {
     },
     onPlaying: ({ commit, rootState }) => {
         const video_id = rootState.status.active_video_id;
-        const el = document.getElementById(video_id);
+        const el = <HTMLVideoElement>document.getElementById(video_id);
 
         if (!el) return;
 
@@ -91,7 +91,7 @@ export default {
     },
     onPlay: ({ commit, rootState }) => {
         const video_id = rootState.status.active_video_id;
-        const el = document.getElementById(video_id);
+        const el = <HTMLVideoElement>document.getElementById(video_id);
 
         if (!el) return;
 
@@ -103,7 +103,7 @@ export default {
     },
     onPause: ({ commit, rootState }) => {
         const video_id = rootState.status.active_video_id;
-        const el = document.getElementById(video_id);
+        const el = <HTMLVideoElement>document.getElementById(video_id);
 
         if (!el) return;
 

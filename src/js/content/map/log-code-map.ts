@@ -12,10 +12,6 @@ export default {
     /*
     **   watchのパースエラー
     **/
-    ERROR_PARSE_VIDEO_DATA: {
-        type: 'error',
-        title: '動画データのパースに失敗しました',
-    },
     UNDEFINED_VIDEO_SRC: {
         type: 'warn',
         title: '動画のURLが見つかりません。'

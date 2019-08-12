@@ -5,6 +5,8 @@ export default class {
     // ソース上のJavascriptを正規表現でめっちゃ無理やり抜き出す
     constructor(text) {
         const result = String(text).match(/Mylist\.preload\([0-9]+?\,\s+?(\[\{.*\}\])\)\;/);
+        if (!result || result.length < 1) return;
+
         const json = JSON.parse(result[1]);
         const shaped = this.shape(json);
 
@@ -46,7 +48,7 @@ export default class {
             if (a_val < b_val) return 1;
             if (a_val > b_val) return -1;
 
-            return tmp = 0;
+            return 0;
         });
     }
 }

@@ -10,7 +10,7 @@ import ChannelPostedVideoList from 'js/content/store/interface/channel-posted-vi
 import misc from 'js/content/lib/misc.ts';
 
 export default class {
-    static ajaxApi(params) {
+    static ajaxApi(params): Promise<any> {
         return new Promise((resolve) => {
             // 識別のためにIDを振り分ける
             const request_id = params.url + Date.now();
@@ -32,9 +32,7 @@ export default class {
         });
     }
 
-    static getVideoDetail(video_id) {
-        if (!video_id) return false;
-
+    static getVideoDetail(video_id: string): Promise<any> {
         return this.ajaxApi({
             url: 'https://www.nicovideo.jp/watch/' + video_id,
             contentType: 'text/html',
@@ -72,9 +70,7 @@ export default class {
         );
     }
 
-    static getThreadKey(thread_id) {
-        if (!thread_id) return false;
-
+    static getThreadKey(thread_id: number) {
         return this.ajaxApi({
             url: 'https://flapi.nicovideo.jp/api/getthreadkey?thread=' + thread_id,
         }).then(
@@ -225,9 +221,7 @@ export default class {
     }
 
     // 任意のユーザーの公開マイリストの一覧を取得
-    static getUserMylistGroupDetail(user_id) {
-        if (!user_id) return false;
-
+    static getUserMylistGroupDetail(user_id: number) {
         return this.ajaxApi({
             url: 'https://api.ce.nicovideo.jp/nicoapi/v1/mylistgroup.get',
             type: 'GET',
@@ -253,9 +247,7 @@ export default class {
     }
 
     // 任意のIDのマイリストの詳細を取得
-    static getPublicMylistDetail(mylist_id) {
-        if (!mylist_id) return false;
-
+    static getPublicMylistDetail(mylist_id: number) {
         return this.ajaxApi({
             url: 'https://www.nicovideo.jp/mylist/' + mylist_id,
             type: 'GET',
@@ -292,9 +284,7 @@ export default class {
     }
 
     // 視聴者のマイリスト一覧を取得する
-    static getViewerMylistgroup(thread_id = false) {
-        if (!thread_id) return false;
-
+    static getViewerMylistgroup(thread_id: string): Promise<any> {
         return this.ajaxApi({
             //url: 'https://www.nicovideo.jp/api/mylistgroup/list',
             url: 'https://flapi.nicovideo.jp/api/watch/mylists',
