@@ -113,7 +113,7 @@ export default {
     },
     computed: {
         ...mapState({
-            videos: state => state.videos.items,
+            videos: state => state.videos.videos,
             status: state => state.status,
             setting: state => state.setting
         }),

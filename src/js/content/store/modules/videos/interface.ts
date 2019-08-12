@@ -1,3 +1,9 @@
+import { ActionContext } from 'js/content/interface/Context.ts';
+
+export interface VideoActionContext extends ActionContext {
+    state: VideoStoreState;
+}
+
 export interface VideoStoreState {
     videos: VideoItem[];
 }

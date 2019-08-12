@@ -7,11 +7,11 @@
             :style="[{width: player_size.w}, {height: player_size.h}]"
         >
             <Player
-                v-for="(video, video_id) in videos"
-                v-show="status.active_video_id == video_id"
-                :key="video_id"
+                v-for="(video, index) in videos"
+                v-show="status.active_video_id == video.id"
+                :key="video.id"
                 :video="video"
-                :video_id="video_id"
+                :video_id="video.id"
             />
         </div>
         <Panels v-if="!is_mini_player_mode" />
@@ -34,7 +34,7 @@ export default {
     methods: {},
     computed: {
         ...mapState({
-            videos: state => state.videos.items,
+            videos: state => state.videos.videos,
             status: state => state.status
         }),
         ...mapGetters({

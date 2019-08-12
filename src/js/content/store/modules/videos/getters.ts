@@ -1,5 +1,6 @@
 import load_status_map from 'js/content/map/load-status.ts';
 import cannot_render_video_html_reasons_map from 'js/content/map/cannot_render_video_html_reasons.ts';
+import { VideoStoreState, VideoStatus } from 'js/content/store/modules/videos/interface.ts';
 
 export default {
     // 閉じられていない動画ID郡を返す

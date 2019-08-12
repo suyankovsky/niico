@@ -8,7 +8,6 @@ import { VideoStoreState, VideoStatus } from 'js/content/store/modules/videos/in
 export default {
     // 動画読み込みイベント
     addVideo: (state: VideoStoreState, video_id) => {
-        console.log('addVideo is called');
         state.videos.push({
             id: video_id,
             status: VideoStatus.AjaxLoadStarted,
@@ -16,6 +15,18 @@ export default {
             content: undefined,
             errors: [],
         });
+    },
+    resetVideo: (state: VideoStoreState, video_id) => {
+        let video = state.videos.find(item => item.id === video_id);
+        if (!video) return false;
+
+        video = {
+            id: video_id,
+            status: VideoStatus.AjaxReLoadStarted,
+            is_closed: false,
+            content: undefined,
+            errors: [],
+        };
     },
     successAjaxVideo: (state: VideoStoreState, { video_id, api_data }) => {
         const video = state.videos.find(item => item.id === video_id);
@@ -67,12 +78,17 @@ export default {
         })
     },
 
-    // 閉じる
     closeVideo: (state, { video_id }) => {
-        Vue.set(state.items[video_id], 'is_closed', true);
+        const video = state.videos.find(item => item.id === video_id);
+        if (!video) return false;
+
+        video.is_closed = true;
     },
     uncloseVideo: (state, { video_id }) => {
-        Vue.set(state.items[video_id], 'is_closed', false);
+        const video = state.videos.find(item => item.id === video_id);
+        if (!video) return false;
+
+        video.is_closed = false;
     },
 
     // 再生プロパティ
