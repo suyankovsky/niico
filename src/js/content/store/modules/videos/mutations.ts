@@ -1,40 +1,70 @@
 import Vue from 'vue';
 import WatchApiDataVideo from 'js/content/store/parser/watch-api-data-video.ts';
 import load_status_map from 'js/content/map/load-status.ts';
+import { VideoStoreState, VideoStatus } from 'js/content/store/modules/videos/interface.ts';
 
 // ここだけTSで書きたい。つらい。
 
 export default {
     // 動画読み込みイベント
-    initializeVideo: (state, { video_id }) => {
-        Vue.set(state.items, video_id, {
+    addVideo: (state: VideoStoreState, video_id) => {
+        console.log('addVideo is called');
+        state.videos.push({
             id: video_id,
-            ajax_load_status: load_status_map.ajax_video.loading,
+            status: VideoStatus.AjaxLoadStarted,
             is_closed: false,
+            content: undefined,
+            errors: [],
+        });
+    },
+    successAjaxVideo: (state: VideoStoreState, { video_id, api_data }) => {
+        const video = state.videos.find(item => item.id === video_id);
+        if (!video) return false;
+
+        video.status = VideoStatus.AjaxLoadSuccess;
+        video.content = new WatchApiDataVideo(api_data);
+    },
+    failAjaxVideo: (state: VideoStoreState, { video_id, error }) => {
+        const video = state.videos.find(item => item.id === video_id);
+        if (!video) return false;
+
+        video.status = VideoStatus.AjaxLoadFailed;
+        video.errors.push({
+            code: VideoStatus.AjaxLoadFailed,
+            content: error,
         })
     },
-    loadSuccessVideo: (state, { video_id, data }) => {
-        Vue.set(state.items, video_id, {
-            ...state.items[video_id],
-            ajax_load_status: load_status_map.ajax_video.success,
-            element_load_status: load_status_map.element.loadingmetadata,
-            is_loaded_metadata: false,
-            ...new WatchApiDataVideo(data),
-        });
+    successAjaxVideoButNoHtml: (state: VideoStoreState, { video_id, responce }) => {
+        const video = state.videos.find(item => item.id === video_id);
+        if (!video) return false;
+
+        video.status = VideoStatus.NoHtml;
+        video.errors.push({
+            code: VideoStatus.NoHtml,
+            content: responce,
+        })
     },
-    loadErrorVideo: (state, { video_id, error }) => {
-        Vue.set(state.items, video_id, {
-            ...state.items[video_id],
-            ajax_load_status: load_status_map.ajax_video.failed,
-            error: error,
-        });
-    },
-    loadErrorIsNeedJoinChannelVideo: (state, { video_id }) => {
-        Vue.set(state.items, video_id, {
-            ...state.items[video_id],
-            ajax_load_status: load_status_map.ajax_video.failed,
-            is_need_join_channel: true,
-        });
+    successAjaxVideoButNoApiData: (state: VideoStoreState, { video_id, html }) => {
+        const video = state.videos.find(item => item.id === video_id);
+        if (!video) return false;
+
+        const is_need_join_channel = (html: string) => {
+            if (html.indexOf('チャンネル会員専用動画') > 0) return true;
+            if (html.indexOf('チャンネル月額会員ならずっと見放題です') > 0) return true;
+            return false;
+        }
+
+        if (is_need_join_channel(String(html))) {
+            video.status = VideoStatus.NoApiData__IsNeedJoinChannel;
+            video.errors.push({
+                code: VideoStatus.NoApiData__IsNeedJoinChannel,
+            })
+        }
+
+        video.status = VideoStatus.NoApiData__Unknown;
+        video.errors.push({
+            code: VideoStatus.NoApiData__Unknown,
+        })
     },
 
     // 閉じる

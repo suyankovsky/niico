@@ -15,7 +15,7 @@ export default {
             }
         }
 
-        commit('initializeVideo', { video_id: video_id });
+        commit('addVideo', video_id);
 
         // niicoウィンドウをとりあえず起動するため、初回のみすぐにactivateVideoする
         const is_first_video = Object.keys(state.items).length == 0;
@@ -26,29 +26,18 @@ export default {
         ajaxApi.getVideoDetail(video_id).then(
             res => {
                 if (!res.html) {
-                    commit('loadErrorVideo', { video_id, error: 'UNKNOWN_ERR' })
+                    commit('successAjaxVideoButNoHtml', { video_id, res });
                     return;
                 }
 
                 if (!res.api_data) {
-                    // 流石にヒドイ判定
-                    // そしてこの２つの判定の差が意味不明
-                    let is_need_join_channel = false;
-                    is_need_join_channel = String(res.html).indexOf('チャンネル会員専用動画') > 0 ? true : false;
-                    is_need_join_channel = String(res.html).indexOf('チャンネル月額会員ならずっと見放題です') > 0 ? true : false;
-
-                    if (is_need_join_channel) {
-                        commit('loadErrorIsNeedJoinChannelVideo', { video_id });
-                        return;
-                    } else {
-                        commit('loadErrorVideo', { video_id, error: 'UNKNOWN_ERR' })
-                        return;
-                    }
+                    commit('successAjaxVideoButNoApiData', { video_id, res });
+                    return;
                 }
 
-                commit('loadSuccessVideo', {
+                commit('successAjaxVideo', {
                     video_id,
-                    data: res.api_data,
+                    api_data: res.api_data,
                 });
                 commit('status/setUserId', res.api_data.viewer.id, { root: true });
                 commit('status/activateVideo', video_id, { root: true });
