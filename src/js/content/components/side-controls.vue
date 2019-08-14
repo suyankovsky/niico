@@ -1,6 +1,6 @@
 <template>
     <div class="controls">
-        <dl @click="fetchVideo(status.active_video_id)">
+        <dl @click="reLoadVideo(status.active_video_id)">
             <dt>
                 <ReLoadIcon />
             </dt>
@@ -91,7 +91,7 @@ export default {
     created: function() {},
     methods: {
         ...mapActions({
-            fetchVideo: "videos/fetchVideo"
+            reLoadVideo: "videos/reLoadVideo"
         }),
         addMylist: function() {
             const message = `「${this.selected_mylist_name}」にマイリスト登録します。よろしいですか？`;

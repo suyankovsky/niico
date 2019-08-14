@@ -6,8 +6,8 @@ import { VideoStoreState, VideoStatus } from 'js/content/store/modules/videos/in
 // ここだけTSで書きたい。つらい。
 
 export default {
-    // 動画読み込みイベント
-    addVideo: (state: VideoStoreState, video_id) => {
+    // 動画読み込み開始直後に呼ばれる初期化関数
+    initializeVideoOnLoadStarted: (state: VideoStoreState, video_id) => {
         state.videos.push({
             id: video_id,
             status: VideoStatus.AjaxLoadStarted,
@@ -16,7 +16,9 @@ export default {
             errors: [],
         });
     },
-    resetVideo: (state: VideoStoreState, video_id) => {
+
+    // 動画の再読み込み開始直後に呼ばれる再初期化関数
+    reInitializeVideoOnReLoadStarted: (state: VideoStoreState, video_id) => {
         let video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
@@ -29,11 +31,15 @@ export default {
         };
     },
     successAjaxVideo: (state: VideoStoreState, { video_id, api_data }) => {
-        const video = state.videos.find(item => item.id === video_id);
+        let video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
         video.status = VideoStatus.AjaxLoadSuccess;
         video.content = new WatchApiDataVideo(api_data);
+        video = {
+            ...video,
+            ...new WatchApiDataVideo(api_data);
+        }
     },
     failAjaxVideo: (state: VideoStoreState, { video_id, error }) => {
         const video = state.videos.find(item => item.id === video_id);

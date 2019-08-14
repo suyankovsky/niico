@@ -72,7 +72,7 @@
                         <PauseIcon />
                     </template>
                 </li>
-                <li class="reload" @click="fetchVideo(status.active_video_id)">
+                <li class="reload" @click="reLoadVideo(status.active_video_id)">
                     <ReLoadIcon />
                 </li>
                 <li class="time_display">
@@ -610,7 +610,7 @@ export default {
             changeIsAutoPlayerWidth: "setting/changeIsAutoPlayerWidth"
         }),
         ...mapActions({
-            fetchVideo: "videos/fetchVideo",
+            reLoadVideo: "videos/reLoadVideo",
             openNicoVideo: "videos/openNicoVideo",
             openTweet: "videos/openTweet",
             requestFullScreenMode: "status/requestFullScreenMode",

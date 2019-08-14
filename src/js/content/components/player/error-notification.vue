@@ -14,7 +14,7 @@
                 </template>
             </div>
             <div class="buttons">
-                <div class="reload" @click="fetchVideo(video_id)">
+                <div class="reload" @click="reLoadVideo(video_id)">
                     <span>再読み込み</span>
                 </div>
                 <div class="openNicoVideo" @click="openNicoVideo">ニコニコ動画で開く</div>
@@ -133,7 +133,7 @@ export default {
     },
     methods: {
         ...mapActions({
-            fetchVideo: "videos/fetchVideo",
+            reLoadVideo: "videos/reLoadVideo",
             openNicoVideo: "videos/openNicoVideo",
             openTweet: "videos/openTweet"
         })

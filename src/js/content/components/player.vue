@@ -141,7 +141,7 @@ export default {
             onPlay: "videos/onPlay",
             onPlaying: "videos/onPlaying",
             onPause: "videos/onPause",
-            fetchVideo: "videos/fetchVideo"
+            reLoadVideo: "videos/reLoadVideo"
         }),
         onLoademetadata: function() {
             this.$store.dispatch("videos/onLoadedmetadata", this.video_id);

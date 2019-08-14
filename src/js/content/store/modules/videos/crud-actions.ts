@@ -3,6 +3,14 @@ import load_status_map from 'js/content/map/load-status.ts';
 import { VideoActionContext, VideoStoreState, VideoStatus } from 'js/content/store/modules/videos/interface.ts';
 
 export default {
+
+    // 動画を再読み込み
+    reLoadVideo: ({ commit, dispatch }: VideoActionContext, video_id) => {
+        commit('reInitializeVideoOnReLoadStarted', { video_id });
+        dispatch('addVideo', video_id);
+    },
+
+    // 動画を読み込み
     addVideo: ({ commit, state, dispatch, getters }: VideoActionContext, video_id) => {
         const has_video = state.videos.find(item => item.id === video_id);
         if (has_video) {
@@ -16,7 +24,7 @@ export default {
             }
         }
 
-        commit('addVideo', video_id);
+        commit('initializeVideoOnLoadStarted', video_id);
 
         // niicoウィンドウをとりあえず起動するため、初回のみすぐにactivateVideoする
         const is_first_video = state.videos.length === 0;
@@ -51,6 +59,8 @@ export default {
             }
         )
     },
+
+    // 動画を閉じ、次の動画をアクティブにする
     closeVideo: ({ commit, getters, rootState }: VideoActionContext, video_id) => {
         if (video_id === rootState.status.active_video_id) {
             if (getters.next_video_id) {
@@ -62,8 +72,4 @@ export default {
         }
         commit('closeVideo', { video_id });
     },
-    fetchVideo: ({ commit, dispatch }: VideoActionContext, video_id) => {
-        commit('resetVideo', { video_id });
-        dispatch('addVideo', video_id);
-    }
 }

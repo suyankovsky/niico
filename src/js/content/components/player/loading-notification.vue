@@ -5,7 +5,7 @@
         </div>
         <div class="text">NOW LOADING</div>
         <div class="buttons" v-if="is_show_actions">
-            <div class="reload" @click="fetchVideo">
+            <div class="reload" @click="reLoadVideo">
                 <span>再読み込み</span>
             </div>
             <div class="openNicoVideo" @click="openNicoVideo">ニコニコ動画で開く</div>
@@ -103,7 +103,7 @@ export default {
     },
     methods: {
         ...mapActions({
-            fetchVideo: "videos/fetchVideo",
+            reLoadVideo: "videos/reLoadVideo",
             openNicoVideo: "videos/openNicoVideo",
             openTweet: "videos/openTweet"
         })
