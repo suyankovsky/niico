@@ -1,20 +1,20 @@
 <template>
     <div class="player" :style="[{width: player_size.w}, {height: player_size.h}]">
-        <template v-if="is_video_loading">
-            <LoadingNotification :is_show_actions="true" />
-        </template>
-        <template v-else-if="cannot_render_video_html_reasons.length > 0">
+        <template v-if="video.status < 1000">
             <ErrorNotification :video="video" :video_id="video_id" />
         </template>
-        <template v-else>
+        <template v-else-if="video.status < 1100">
+            {{video.status}}
+            <LoadingNotification :is_show_actions="true" />
+        </template>
+        <template v-else-if="video.status > 1100">
             <template v-if="video.element_load_status < 0">
                 <LoadingNotification :is_show_actions="false" />
             </template>
             <video
-                v-show="video && video.src && !video.is_closed"
-                :src="video.src"
+                :src="video.content.src"
                 :id="video_id"
-                :poster="video.thumbnail_src"
+                :poster="video.content.thumbnail_src"
                 :controls="setting.is_default_player_controller"
                 @loadedmetadata="onLoademetadata"
                 @canplay="onCanPlay"
@@ -28,10 +28,10 @@
                 @pause="onPause"
                 ref="video"
             ></video>
-            <template v-if="video.duration">
+            <template v-if="video.content.duration">
                 <CommentCanvas
                     class="comment"
-                    v-if="video.original_data"
+                    v-if="video.raw"
                     v-show="status.active_video_id == video_id"
                     :key="key"
                     :video_id="video_id"
@@ -116,20 +116,7 @@ export default {
             videos: state => state.videos.videos,
             status: state => state.status,
             setting: state => state.setting
-        }),
-        is_video_loading: function() {
-            return this.$store.getters["videos/is_video_loading"](
-                this.video_id
-            );
-        },
-        cannot_render_video_html_reasons: function() {
-            return this.$store.getters[
-                "videos/cannot_render_video_html_reasons"
-            ](this.video_id);
-        },
-        is_loaded_metadata() {
-            return this.videos[this.video_id].is_loaded_metadata;
-        }
+        })
     },
     methods: {
         ...mapGetters({
@@ -179,7 +166,7 @@ export default {
             if (!el) return;
 
             if (this.video.current_time)
-                el.currentTime = this.video.current_time;
+                el.currentTime = this.video.content.current_time;
             el.play();
         },
         pause: function() {

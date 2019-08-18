@@ -32,7 +32,7 @@ export default class {
         });
     }
 
-    static getVideoDetail(video_id: string): Promise<any> {
+    static getVideoDetail(video_id: string) {
         return this.ajaxApi({
             url: 'https://www.nicovideo.jp/watch/' + video_id,
             contentType: 'text/html',
@@ -41,32 +41,14 @@ export default class {
                 misc.pushLog('SUCCESS_GET_WATCH', {
                     video_id,
                 });
-
-                const $res = $(res);
-                const api_data = $res.filter('#js-initial-watch-data').attr('data-api-data');
-
-                if (api_data) {
-                    return {
-                        api_data: JSON.parse(api_data),
-                        html: res,
-                    };
-                }
-
-                misc.pushLog('ERROR_PARSE_VIDEO_DATA', {
-                    video_id,
-                });
-
-                return {
-                    api_data: null,
-                    html: res,
-                }
+                return res;
             },
             error => {
                 misc.pushLog('ERROR_GET_WATCH', {
                     video_id,
                 });
                 return error;
-            }
+            },
         );
     }
 

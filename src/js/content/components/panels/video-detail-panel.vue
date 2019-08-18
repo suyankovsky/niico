@@ -1,25 +1,26 @@
 <template>
     <div class="panel">
-        <template v-if="is_video_loading">読み込み中...</template>
-        <template v-else-if="is_parse_error">動画情報の取得に失敗しました。</template>
-        <template v-else>
-            <div class="title">{{video.title}}</div>
+        <template v-if="video.status < 200">動画情報の取得に失敗しました。</template>
+        <template v-else-if="video.status < 1100">読み込み中...</template>
+
+        <template v-else-if="video.status > 1100">
+            <div class="title">{{video.content.title}}</div>
             <ul class="count">
                 <li title="視聴数">
                     <ViewCountIcon />
-                    <span>{{video.viewCount | separateByComma}}</span>
+                    <span>{{video.content.count_view | separateByComma}}</span>
                 </li>
                 <li title="コメント数">
                     <CommentCountIcon />
-                    <span>{{video.commentCount | separateByComma}}</span>
+                    <span>{{video.content.count_comment | separateByComma}}</span>
                 </li>
                 <li title="マイリスト数">
                     <MylistCountIcon />
-                    <span>{{video.mylistCount | separateByComma}}</span>
+                    <span>{{video.content.count_mylist | separateByComma}}</span>
                 </li>
             </ul>
             <div :class="['tags', {'is_horizontal_scroll': is_horizontal_scroll}]">
-                <div v-for="(tag, key) in video.tags" class="tag" :key="key">
+                <div v-for="(tag, key) in video.content.tags" class="tag" :key="key">
                     <a
                         :href="'//www.nicovideo.jp/tag/' + tag.name"
                         target="_blank"
@@ -39,29 +40,32 @@
             <hr />
 
             <div class="owner">
-                <template v-if="video.uploader.is_public">
-                    <a class="ownerIcon" :href="video.uploader.href" target="_blank">
-                        <img :src="video.uploader.icon_src" />
+                <template v-if="video.content.uploader.is_public">
+                    <a class="ownerIcon" :href="video.content.uploader.href" target="_blank">
+                        <img :src="video.content.uploader.icon_src" />
                     </a>
                     <div class="ownerInfo">
                         <div class="ownerName">
-                            <a :href="video.uploader.href" target="_blank">{{video.uploader.name}}</a>
+                            <a
+                                :href="video.content.uploader.href"
+                                target="_blank"
+                            >{{video.content.uploader.name}}</a>
                         </div>
-                        <div class="postedDate">{{video.posted_date|formartDate}}に投稿</div>
+                        <div class="postedDate">{{video.content.posted_date|formartDate}}に投稿</div>
                     </div>
                 </template>
                 <template v-else>
                     <div class="ownerIcon">
-                        <img :src="video.uploader.icon_src" />
+                        <img :src="video.content.uploader.icon_src" />
                     </div>
                     <div class="ownerInfo ownerInfo--is_notPublic">
-                        <div class="ownerName">{{video.uploader.name}}</div>
-                        <div class="postedDate">{{video.posted_date|formartDate}}に投稿</div>
+                        <div class="ownerName">{{video.content.uploader.name}}</div>
+                        <div class="postedDate">{{video.content.posted_date|formartDate}}に投稿</div>
                     </div>
                 </template>
             </div>
 
-            <div class="description" v-html="video.description"></div>
+            <div class="description" v-html="video.content.description"></div>
 
             <hr />
 
@@ -259,37 +263,27 @@ export default {
     },
     computed: {
         ...mapState({
-            videos: state => state.videos.items,
-            video: state => state.videos.items[state.status.active_video_id],
+            videos: state => state.videos.videos,
             video_id: state => state.status.active_video_id,
+            video: state =>
+                state.videos.videos.find(
+                    item => item.id === state.status.active_video_id
+                ),
             status: state => state.status,
             setting: state => state.setting
         }),
-        is_video_loading() {
-            return this.$store.getters["videos/is_video_loading"](
-                this.video_id
-            );
-        },
-        is_parse_error() {
-            return this.$store.getters["videos/is_parse_error"](this.video_id);
-        },
-        cannot_render_video_html_reasons: function() {
-            return this.$store.getters[
-                "videos/cannot_render_video_html_reasons"
-            ](this.video_id);
-        },
         is_horizontal_scroll: function() {
             return this.setting.is_horizontal_scroll;
         },
         prefixed_id() {
-            return this.video.original_data.video.id || this.video_id;
+            return this.video.raw.video.id || this.video_id;
         },
         thread_id() {
-            if (this.video.is_channel) {
-                return this.video.original_data.thread.ids.community;
+            if (this.video.content.is_channel) {
+                return this.video.raw.thread.ids.community;
             }
 
-            return this.video.original_data.thread.ids.default;
+            return this.video.raw.thread.ids.default;
         }
     },
     filters: {

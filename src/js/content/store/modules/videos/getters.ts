@@ -1,6 +1,6 @@
 import load_status_map from 'js/content/map/load-status.ts';
 import cannot_render_video_html_reasons_map from 'js/content/map/cannot_render_video_html_reasons.ts';
-import { VideoStoreState, VideoStatus } from 'js/content/store/modules/videos/interface.ts';
+import { VideoStoreState, VideoStatus, VideoItem } from 'js/content/interface/Video';
 
 export default {
     // 閉じられていない動画ID郡を返す
@@ -42,43 +42,40 @@ export default {
         }
     },
 
-    is_video_loading: (state, getters, rootState) => (video_id) => {
-        if (!video_id) {
-            video_id = rootState.status.active_video_id;
-        }
-        const video = state.items[video_id];
-
-        if (video.ajax_load_status === load_status_map.ajax_video.loading) {
+    is_loading_watch: (state, getters, rootState) => (video: VideoItem) => {
+        if (video.status === VideoStatus.AjaxLoadStarted || video.status === VideoStatus.AjaxReLoadStarted) {
             return true;
         }
-
         return false;
     },
 
-    is_parse_error: (state, getters, rootState) => (video_id) => {
-        if (!video_id) {
-            video_id = rootState.status.active_video_id;
-        }
-        const video = state.items[video_id];
+    is_loading_buffer: (state) => (video: VideoItem) => {
+        if (video.status > 1100) return true;
+        return false;
+    },
 
-        if (video.ajax_load_status === load_status_map.ajax_video.failed) {
-            return true;
-        }
+    is_error: (state) => (video: VideoItem) => {
+        if (video.status < 1000) return true;
+        return false;
+    },
 
+    is_can_play: (state) => (video: VideoItem) => {
+        if (video.status === 2525 && video.content && video.content.src !== "") return true;
         return false;
     },
 
     // video要素を描画しない理由があれば配列で返す
     cannot_render_video_html_reasons: (state) => (video_id) => {
-        const video = state.items[video_id];
+        return [];
+        const video = state.videos.find(item => item.id === video_id);
 
         const conditions = [
             {
-                condition: video.ajax_load_status == load_status_map.ajax_video.failed,
+                condition: video.status === VideoStatus.AjaxLoadFailed,
                 code: 'PARSE_ERR_FAILED_LOAD_VIDEO',
             },
             {
-                condition: video.is_need_join_channel,
+                condition: video.status === VideoStatus.NoApiData__IsNeedJoinChannel,
                 code: 'CONTEXT_ERR_NEED_JOIN_CHANNEL',
             },
             {

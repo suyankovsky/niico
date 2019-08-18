@@ -1,6 +1,8 @@
 import ajaxApi from 'js/content/lib/ajax-api.ts';
 import load_status_map from 'js/content/map/load-status.ts';
-import { VideoActionContext, VideoStoreState, VideoStatus } from 'js/content/store/modules/videos/interface.ts';
+import { VideoActionContext, VideoStoreState, VideoStatus, VideoError } from 'js/content/interface/Video';
+import misc from 'js/content/lib/misc.ts';
+import $ from 'jquery';
 
 export default {
 
@@ -34,28 +36,32 @@ export default {
 
         ajaxApi.getVideoDetail(video_id).then(
             res => {
-                if (!res.html) {
-                    commit('successAjaxVideoButNoHtml', { video_id, res });
+                const api_data_raw = $(res).filter('#js-initial-watch-data').attr('data-api-data');
+
+                // JSON.parseは空文字だと失敗する
+                if (!api_data_raw) {
+                    commit('onErrorNoWatchApiData', { video_id, res });
                     return;
                 }
 
-                if (!res.api_data) {
-                    commit('successAjaxVideoButNoApiData', { video_id, res });
-                    return;
-                }
-
-                commit('successAjaxVideo', {
+                const api_data = JSON.parse(api_data_raw);
+                commit('parseWatchApiData', {
                     video_id,
-                    api_data: res.api_data,
+                    api_data,
                 });
 
-                commit('status/setUserId', res.api_data.viewer.id, { root: true });
+                const video = state.videos.find(item => item.id === video_id);
+                if (!video || !video.content) return;
+
+                commit('status/setUserId', api_data.viewer.id, { root: true });
                 commit('status/activateVideo', video_id, { root: true });
-                dispatch('viewerMylist/getViewerMylistgroup', state.items[video_id].use_thread_id, { root: true });
+                dispatch('viewerMylist/getViewerMylistgroup', video.content.thread.thread_ids.use, { root: true });
             },
             error => {
-                console.log(error);
-                commit('failAjaxVideo', { video_id, error });
+                commit('onErrorFailAjaxr', {
+                    video_id,
+                    detail: error,
+                });
             }
         )
     },
