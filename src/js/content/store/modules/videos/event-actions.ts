@@ -43,29 +43,23 @@ export default {
             video_id,
             ranges,
         });
-        commit('setCurrentTime', {
-            video_id,
-            current_time,
-        });
+        commit('setCurrentTime', video_id);
     },
-    onEnded: ({ commit, rootState, getters }) => {
+    onEnded: ({ commit, rootState, getters }, video_id) => {
         const do_on_ended = rootState.setting.do_on_ended;
 
         if (do_on_ended == 'none') return;
 
-        const video_id = rootState.status.active_video_id;
-        const video_el = misc.getVideoEl(video_id);
-        video_el.currentTime = 0;
-        commit('setCurrentTime', {
-            video_id,
-            current_time: 0,
-        });
+        const el = misc.getVideoEl(video_id);
+        if (!el) return;
+
+        el.currentTime = 0;
 
         if (do_on_ended == 'is_next_video' && getters.next_video_id) {
             commit('status/activateVideo', getters.next_video_id, { root: true });
             return;
         }
 
-        video_el.play();
+        el.play();
     },
 }

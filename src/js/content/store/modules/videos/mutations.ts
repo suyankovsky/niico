@@ -3,6 +3,7 @@ import WatchApiDataVideo from 'js/content/store/parser/watch-api-data-video.ts';
 import load_status_map from 'js/content/map/load-status.ts';
 import { VideoItem, VideoStoreState, VideoStatus, VideoError } from 'js/content/interface/Video';
 import { MutationTree } from 'vuex';
+import misc from 'js/content/lib/misc';
 
 const initializeMutations: MutationTree<VideoStoreState> = {
     // 動画読み込み開始直後に呼ばれる初期化関数
@@ -92,11 +93,14 @@ const editPropertyMutations: MutationTree<VideoStoreState> = {
     // setCurrentTimeの値はvideo要素へFBされない。
     // timeupdateイベントで更新しており、FBすると無限ループしてしまうため。
     // 代わりにmisc.updateActiveVideoCurrentTime()を使用のこと。
-    setCurrentTime: (state, { video_id, current_time }) => {
+    setCurrentTime: (state, video_id) => {
         const video = state.videos.find(item => item.id === video_id);
-        if (!video) return false;
+        if (!video) return;
 
-        video.current_time = parseInt(current_time);
+        const el = misc.getVideoEl(video_id);
+        if (!el) return;
+
+        video.current_time = el.currentTime;
     },
 };
 

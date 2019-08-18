@@ -20,7 +20,7 @@
                 @canplay="onCanPlay(video_id)"
                 @waiting="onWaiting"
                 @timeupdate="onTimeUpdate"
-                @ended="onEnded"
+                @ended="onEnded(video_id)"
                 @error="onError"
                 @play="onPlay(video_id)"
                 @playing="onPlaying(video_id)"
