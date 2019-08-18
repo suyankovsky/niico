@@ -10,23 +10,26 @@ export interface VideoStoreState {
 }
 
 export interface VideoItem {
-    id: string;
-    status: VideoStatus;
-    errors: VideoError[];
-    is_closed: boolean;
-    content?: VideoItemContent;
-    raw?: any;
+    id: string;// 動画IDまたはスレッドID。niico上の識別子: /(sm|so)?[0-9]+/
+    status: VideoStatus;// これを元に各種表示の出し分けをする
+    errors: VideoError[];// エラーの詳細を格納。
+    is_closed: boolean;// 配列からremoveするとHTMLVideoElementが再生成されて再生が途切れるのでプロパティで制御する
 
-    is_paused?: boolean;
+    content?: VideoItemContent;// watch api dataをパースした動画情報。初期化処理以外で書き換わることはない。
+    raw?: any;// watch api dataの生データ。
+
+    is_paused?: boolean; // 再生状態
+    current_time?: number;// 現在の再生時間
+    ranges?: [];// バッファの配列
 }
 
 export interface VideoItemContent {
-    is_encrypted: boolean;
-    is_need_payment: boolean;
-    is_need_join: boolean;
-    is_channel: boolean;
-    is_public: boolean;
-    is_deleted: boolean;
+    is_encrypted: boolean;// 暗号化された動画である
+    is_need_payment: boolean;// 都度課金の必要がある / 有料動画でも課金済みならfalseっぽい。
+    is_need_join: boolean;// チャンネル入会の必要がある / 会員限定動画でも入会済みならfalseっぽい。
+    is_channel: boolean;// チャンネル動画である
+    is_public: boolean;// 公開動画である（非公開でない）
+    is_deleted: boolean;// 削除済み動画である
 
     prefixed_video_id: string;
     thread: {
@@ -42,7 +45,6 @@ export interface VideoItemContent {
     }
 
     title: string;
-    current_time: number;
     src: string | null;
     thumbnail_src: string | null;
     count_view: number;
@@ -53,8 +55,6 @@ export interface VideoItemContent {
     posted_date: string;
     csrf_token: string;
     uploader: ChannelUploader | UserUploader;
-
-    ranges: [];
 }
 
 export interface VideoError {
@@ -116,8 +116,8 @@ export enum VideoStatus {
     // コメントパネル：コメントステータスに応じる
     //
     AjaxLoadSuccess = 1101,
-    ElementLoadStarted = 1102,// VideoElementがloadstartを発火したとき
-    ElementLoadDoneMetadata = 1103,// VideoElementがloadedmetadataを発火したとき
+    ElementLoadedmetadata = 1103,// VideoElementがloadedmetadataを発火したとき
+    ElementWaiting = 1104,
 
     //
     // 正常系3（再生可）

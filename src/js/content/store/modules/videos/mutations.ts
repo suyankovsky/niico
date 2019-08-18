@@ -29,20 +29,19 @@ const initializeMutations = {
 
     // api_dataの取得完了直後、stateに反映する
     parseWatchApiData: (state: VideoStoreState, { video_id, api_data }) => {
-        let video = state.videos.find(item => item.id === video_id);
+        const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
-        console.log(api_data);
-
-        video.status = VideoStatus.AjaxLoadSuccess;
         video.content = WatchApiDataVideo.main(api_data);
         video.raw = api_data;
+        video.current_time = 0;
+        video.ranges = [];
 
         if (video.content.is_public !== true) {
             videoErrorHandler(
                 video,
                 VideoStatus.IsHidden,
-                '非公開です。',
+                '非公開動画です。',
             );
         } else if (video.content.is_encrypted) {
             videoErrorHandler(
@@ -50,13 +49,13 @@ const initializeMutations = {
                 VideoStatus.MediaError__Encrypted,
                 'niico非対応の暗号化された動画です。ニコニコ動画で視聴してください。',
             );
-        } else if (video.content.is_need_join) {
+        } else if (video.content.is_need_join && !video.content.src) {
             videoErrorHandler(
                 video,
                 VideoStatus.UnauthorizedError__isNeedJoinChannel,
                 'チャンネル会員限定動画のため視聴権限がありません。チャンネルに入会する必要があります。',
             );
-        } else if (video.content.is_need_payment) {
+        } else if (video.content.is_need_payment && !video.content.src) {
             videoErrorHandler(
                 video,
                 VideoStatus.UnauthorizedError__isNeedPayment,
@@ -64,6 +63,7 @@ const initializeMutations = {
             );
         }
 
+        video.status = VideoStatus.AjaxLoadSuccess;
         console.log(video);
     },
 };
@@ -106,27 +106,41 @@ const editPropertyMutations = {
         video.content.current_time = parseInt(current_time);
     },
 
-    beginLoadingBuffer: (state, { video_id }) => {
-        Vue.set(state.items[video_id], 'element_load_status', load_status_map.element.loadingbuffer);
-    },
-    doneLoadMetaData: (state, { video_id }) => {
-        Vue.set(state.items[video_id], 'element_load_status', load_status_map.element.loadingbuffer);
-    },
-
     togglePlay: (state, { video_id, is_paused }) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
         video.is_paused = is_paused ? true : false;
     },
-    onCanPlay: (state, { video_id }) => {
+};
+
+const HTMLVideoElementEventHandleMutation = {
+    // ブラウザがメディアリソースの長さと寸法を判定した場合に発生
+    onLoadedmetadata: (state: VideoStoreState, { video_id }) => {
+        const video = state.videos.find(item => item.id === video_id);
+        if (!video) return false;
+
+        video.status = VideoStatus.ElementLoadedmetadata;
+    },
+
+    // 今すぐに再生を再開できるが、
+    // バッファリングが不十分でコンテンツを最後まで表示できないと予測している場合に発生
+    onCanPlay: (state: VideoStoreState, { video_id }) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
         video.status = VideoStatus.CanPlay;
     },
-    onCanPlayThrough: (state, { video_id }) => {
+
+    // 次のフレームが利用不可のため再生を停止したが、
+    // そのフレームがやがて利用可能になると想定している場合に発生
+    onWaiting: (state: VideoStoreState, { video_id }) => {
+        const video = state.videos.find(item => item.id === video_id);
+        if (!video) return false;
+
+        video.status = VideoStatus.ElementWaiting;
     },
+
 };
 
 const videoErrorHandler = (video: VideoItem, status: VideoStatus, detail?: any) => {
@@ -193,4 +207,5 @@ export default {
     ...initializeMutations,
     ...editPropertyMutations,
     ...statusChangeMutations,
+    ...HTMLVideoElementEventHandleMutation,
 }

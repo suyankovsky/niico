@@ -1,5 +1,6 @@
 import codes from 'js/content/map/log-code-map.ts';
 import FormatHelper from 'js/content/lib/format-helper.ts';
+import { VideoItem, VideoStoreState, VideoStatus, VideoError } from 'js/content/interface/Video';
 
 export default class {
     static pushLog(code, detail?) {
@@ -41,6 +42,22 @@ export default class {
     static activeVideoElement(): HTMLVideoElement | null {
         const video_id = window.niico.$store.state.status.active_video_id;
         return <HTMLVideoElement>document.getElementById(video_id);
+    }
+
+    static getActiveVideoId(): string | null {
+        return window.niico.$store.state.status.active_video_id;
+    }
+
+    static getVideoEl(video_id?: string | null): HTMLVideoElement | null {
+        if (!video_id) video_id = this.getActiveVideoId();
+        if (!video_id) return null;
+        return <HTMLVideoElement>document.getElementById(video_id);
+    }
+
+    static getVideoItem(video_id?: string | null): VideoItem | null {
+        if (!video_id) video_id = this.getActiveVideoId();
+        if (!video_id) return null;
+        return window.niico.$store.state.videos.videos.find(item => item.id === video_id);
     }
 
     // 現在有効な動画の再生時間を変更する

@@ -9,7 +9,6 @@ export default class {
     static main(v: RawWatchApiData): VideoItemContent {
         return {
             title: v.video.title,
-            current_time: 0,
             is_channel: v.channel !== null,
             src: v.video.smileInfo.url || null,
             is_encrypted: v.video.dmcInfo !== null && v.video.dmcInfo.encryption === true,
@@ -26,7 +25,6 @@ export default class {
             posted_date: v.video.postedDateTime,
             csrf_token: v.context.csrfToken,
             uploader: this.uploader(v),
-            ranges: [],
 
             prefixed_video_id: v.video.id,
 

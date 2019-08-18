@@ -16,9 +16,8 @@
                 :id="video_id"
                 :poster="video.content.thumbnail_src"
                 :controls="setting.is_default_player_controller"
-                @loadedmetadata="onLoademetadata"
+                @loadedmetadata="onLoadedmetadata"
                 @canplay="onCanPlay"
-                @canplaythrough="onCanPlayThrough"
                 @waiting="onWaiting"
                 @timeupdate="onTimeUpdate"
                 @ended="onEnded"
@@ -71,7 +70,7 @@
 </style>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions, mapGetters, mapMutations } from "vuex";
 
 import CommentCanvas from "js/content/components/player/comment-canvas.vue";
 import VideoController from "js/content/components/player/video-controller.vue";
@@ -90,13 +89,13 @@ export default {
     },
     watch: {
         "status.active_video_id": function(new_val, old_val) {
-            new_val == this.video_id ? this.play() : this.pause();
+            new_val == this.video_id ? this.doPlay() : this.doPause();
         },
         "status.is_window_closed": function(is_window_closed) {
-            if (is_window_closed) this.pause();
+            if (is_window_closed) this.doPause();
         },
         "video.is_closed": function(is_closed) {
-            if (is_closed) this.pause();
+            if (is_closed) this.doPause();
         },
         "setting.volume": function(volume) {
             if (!this.$refs.video) return;
@@ -122,59 +121,23 @@ export default {
         ...mapGetters({
             player_size: "setting/player_size"
         }),
+        ...mapMutations({
+            onCanPlay: "videos/onCanPlay",
+            onWaiting: "videos/onWaiting"
+        }),
         ...mapActions({
             onTimeUpdate: "videos/onTimeUpdate",
             onEnded: "videos/onEnded",
             onPlay: "videos/onPlay",
             onPlaying: "videos/onPlaying",
             onPause: "videos/onPause",
-            reLoadVideo: "videos/reLoadVideo"
-        }),
-        onLoademetadata: function() {
-            this.$store.dispatch("videos/onLoadedmetadata", this.video_id);
-            this.$refs.video.volume = this.$store.getters["setting/volume"];
-            this.play();
-        },
-        onCanPlay() {
-            this.$store.commit("videos/onCanPlay", {
-                video_id: this.video_id
-            });
-        },
-        onCanPlayThrough() {
-            this.$store.commit("videos/onCanPlayThrough", {
-                video_id: this.video_id
-            });
-        },
-        onWaiting() {
-            this.$store.commit("videos/beginLoadingBuffer", {
-                video_id: this.video_id
-            });
-        },
-        onError: function($error) {
-            this.$store.dispatch("videos/onError", $error);
-        },
-        togglePlay: function() {
-            const el = document.getElementById(this.video_id);
-            if (!el) return;
-
-            el.paused ? this.play() : this.pause();
-        },
-        play: function() {
-            if (this.status.active_video_id !== this.video_id) return;
-
-            const el = document.getElementById(this.video_id);
-            if (!el) return;
-
-            if (this.video.current_time)
-                el.currentTime = this.video.content.current_time;
-            el.play();
-        },
-        pause: function() {
-            const el = document.getElementById(this.video_id);
-            if (!el) return;
-
-            el.pause();
-        }
+            reLoadVideo: "videos/reLoadVideo",
+            onLoadedmetadata: "videos/onLoadedmetadata",
+            onError: "videos/onError",
+            doTogglePlay: "videos/doTogglePlay",
+            doPlay: "videos/doPlay",
+            doPause: "videos/doPause"
+        })
     }
 };
 </script>

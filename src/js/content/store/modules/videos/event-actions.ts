@@ -1,8 +1,35 @@
 import misc from 'js/content/lib/misc.ts';
 import do_on_ended_map from 'js/content/map/do_on_ended.ts';
+import { VideoItem, VideoStoreState, VideoStatus, VideoError } from 'js/content/interface/Video';
 
 export default {
-    onError: ({ commit }, error) => {
+    doTogglePlay({ commit, dispatch }, { video_id }: { video_id: string }) {
+        const el = misc.getVideoEl(video_id);
+        if (!el) return;
+
+        el.paused ? dispatch("doPlay", { video_id }) : dispatch("doPause", { video_id });
+    },
+    doPlay({ commit, rootState, state }, { video_id }: { video_id: string }) {
+        // if (rootState.status.active_video_id !== video_id) return;
+
+        const el = misc.getVideoEl(video_id);
+        const video = misc.getVideoItem(video_id);
+        console.log(el, video);
+        if (!el || !video || !video.content) return;
+
+        if (video.content.current_time) {
+            el.currentTime = video.content.current_time;
+        }
+        el.play();
+    },
+    doPause({ commit, rootState, state }, { video_id }: { video_id: string }) {
+        const el = misc.getVideoEl(video_id);
+        if (!el) return;
+
+        el.pause();
+    },
+    onError({ commit }, error) {
+        //commit("videos/onError", { video_id, error });
         const video_id = error.target.id;
 
         commit('onMediaErrorEvent', {
@@ -14,21 +41,25 @@ export default {
             error_code: error.target.error.code,
         });
     },
-    onLoadedmetadata: ({ commit, rootState }, video_id) => {
-        const el = <HTMLVideoElement>document.getElementById(video_id);
+    onLoadedmetadata: ({ commit, rootGetters, dispatch }, video_id) => {
+        const el = misc.getVideoEl(video_id);
         if (!el) return;
 
         commit('setDuration', {
             video_id,
             duration: el.duration || 0,
         });
-        commit('doneLoadMetaData', {
+        commit('onLoadedmetadata', {
             video_id,
         });
+
+        el.volume = rootGetters["setting/volume"] || 1;
+        console.log('doplay')
+        dispatch('doPlay', { video_id });
     },
     onTimeUpdate: ({ commit, rootState }) => {
         const video_id = rootState.status.active_video_id;
-        const el = <HTMLVideoElement>document.getElementById(video_id);
+        const el = misc.getVideoEl(video_id);
         if (!el) return;
 
         const current_time = el.currentTime;
@@ -64,7 +95,7 @@ export default {
         if (do_on_ended == 'none') return;
 
         const video_id = rootState.status.active_video_id;
-        const video_el = <HTMLVideoElement>document.getElementById(video_id);
+        const video_el = misc.getVideoEl(video_id);
         video_el.currentTime = 0;
         commit('setCurrentTime', {
             video_id,
@@ -80,7 +111,7 @@ export default {
     },
     onPlaying: ({ commit, rootState }) => {
         const video_id = rootState.status.active_video_id;
-        const el = <HTMLVideoElement>document.getElementById(video_id);
+        const el = misc.getVideoEl(video_id);
 
         if (!el) return;
 
@@ -91,7 +122,7 @@ export default {
     },
     onPlay: ({ commit, rootState }) => {
         const video_id = rootState.status.active_video_id;
-        const el = <HTMLVideoElement>document.getElementById(video_id);
+        const el = misc.getVideoEl(video_id);
 
         if (!el) return;
 
