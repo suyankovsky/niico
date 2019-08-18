@@ -1,19 +1,21 @@
 import ajaxApi from 'js/content/lib/ajax-api.ts';
 import load_status_map from 'js/content/map/load-status.ts';
-import { VideoActionContext, VideoStoreState, VideoStatus, VideoError } from 'js/content/interface/Video';
+import { VideoStoreState, VideoStatus, VideoError } from 'js/content/interface/Video';
 import misc from 'js/content/lib/misc.ts';
 import $ from 'jquery';
+import { ActionTree } from 'vuex';
 
-export default {
+
+const actions: ActionTree<VideoStoreState, any> = {
 
     // 動画を再読み込み
-    reLoadVideo: ({ commit, dispatch }: VideoActionContext, video_id) => {
+    reLoadVideo: ({ commit, dispatch }, video_id) => {
         commit('reInitializeVideoOnReLoadStarted', { video_id });
         dispatch('addVideo', video_id);
     },
 
     // 動画を読み込み
-    addVideo: ({ commit, state, dispatch, getters }: VideoActionContext, video_id) => {
+    addVideo: ({ commit, state, dispatch, getters }, video_id) => {
         const has_video = state.videos.find(item => item.id === video_id);
         if (has_video) {
             const video = has_video;
@@ -67,7 +69,7 @@ export default {
     },
 
     // 動画を閉じ、次の動画をアクティブにする
-    closeVideo: ({ commit, getters, rootState }: VideoActionContext, video_id) => {
+    closeVideo: ({ commit, getters, rootState }, video_id) => {
         if (video_id === rootState.status.active_video_id) {
             if (getters.next_video_id) {
                 commit('status/activateVideo', getters.next_video_id, { root: true });
@@ -79,3 +81,5 @@ export default {
         commit('closeVideo', { video_id });
     },
 }
+
+export default actions;

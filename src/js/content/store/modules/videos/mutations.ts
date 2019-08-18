@@ -2,10 +2,11 @@ import Vue from 'vue';
 import WatchApiDataVideo from 'js/content/store/parser/watch-api-data-video.ts';
 import load_status_map from 'js/content/map/load-status.ts';
 import { VideoItem, VideoStoreState, VideoStatus, VideoError } from 'js/content/interface/Video';
+import { MutationTree } from 'vuex';
 
-const initializeMutations = {
+const initializeMutations: MutationTree<VideoStoreState> = {
     // 動画読み込み開始直後に呼ばれる初期化関数
-    initializeVideoOnLoadStarted: (state: VideoStoreState, video_id) => {
+    initializeVideoOnLoadStarted: (state, video_id) => {
         state.videos.push({
             id: video_id,
             status: VideoStatus.AjaxLoadStarted,
@@ -15,7 +16,7 @@ const initializeMutations = {
     },
 
     // 動画の再読み込み開始直後に呼ばれる再初期化関数
-    reInitializeVideoOnReLoadStarted: (state: VideoStoreState, video_id) => {
+    reInitializeVideoOnReLoadStarted: (state, video_id) => {
         let video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
@@ -28,7 +29,7 @@ const initializeMutations = {
     },
 
     // api_dataの取得完了直後、stateに反映する
-    parseWatchApiData: (state: VideoStoreState, { video_id, api_data }) => {
+    parseWatchApiData: (state, { video_id, api_data }) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
@@ -36,6 +37,8 @@ const initializeMutations = {
         video.raw = api_data;
         video.current_time = 0;
         video.ranges = [];
+
+        video.status = VideoStatus.AjaxLoadSuccess;
 
         if (video.content.is_public !== true) {
             videoErrorHandler(
@@ -62,13 +65,10 @@ const initializeMutations = {
                 '有料動画のため視聴権限がありません。動画を購入する必要があります。',
             );
         }
-
-        video.status = VideoStatus.AjaxLoadSuccess;
-        console.log(video);
     },
 };
 
-const editPropertyMutations = {
+const editPropertyMutations: MutationTree<VideoStoreState> = {
     closeVideo: (state, { video_id }) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
@@ -82,18 +82,11 @@ const editPropertyMutations = {
         video.is_closed = false;
     },
 
-    // 再生プロパティ
-    setDuration: (state, { video_id, duration }) => {
-        const video = state.videos.find(item => item.id === video_id);
-        if (!video) return false;
-
-        video.content.duration = duration;
-    },
     setRanges: (state, { video_id, ranges }) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
-        video.content.ranges = ranges;
+        video.ranges = ranges;
     },
 
     // setCurrentTimeの値はvideo要素へFBされない。
@@ -103,20 +96,26 @@ const editPropertyMutations = {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
-        video.content.current_time = parseInt(current_time);
-    },
-
-    togglePlay: (state, { video_id, is_paused }) => {
-        const video = state.videos.find(item => item.id === video_id);
-        if (!video) return false;
-
-        video.is_paused = is_paused ? true : false;
+        video.current_time = parseInt(current_time);
     },
 };
 
 const HTMLVideoElementEventHandleMutation = {
+    onPlaying: (state, video_id) => {
+        const video = state.videos.find(item => item.id === video_id);
+        if (!video) return false;
+
+        video.is_paused = false;
+    },
+    onPaused: (state, video_id) => {
+        const video = state.videos.find(item => item.id === video_id);
+        if (!video) return false;
+
+        video.is_paused = true;
+    },
+
     // ブラウザがメディアリソースの長さと寸法を判定した場合に発生
-    onLoadedmetadata: (state: VideoStoreState, { video_id }) => {
+    onLoadedmetadata: (state, video_id) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
@@ -125,7 +124,7 @@ const HTMLVideoElementEventHandleMutation = {
 
     // 今すぐに再生を再開できるが、
     // バッファリングが不十分でコンテンツを最後まで表示できないと予測している場合に発生
-    onCanPlay: (state: VideoStoreState, { video_id }) => {
+    onCanPlay: (state, video_id) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
@@ -134,7 +133,7 @@ const HTMLVideoElementEventHandleMutation = {
 
     // 次のフレームが利用不可のため再生を停止したが、
     // そのフレームがやがて利用可能になると想定している場合に発生
-    onWaiting: (state: VideoStoreState, { video_id }) => {
+    onWaiting: (state, video_id) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
@@ -150,8 +149,8 @@ const videoErrorHandler = (video: VideoItem, status: VideoStatus, detail?: any) 
         detail,
     });
 };
-const statusChangeMutations = {
-    onErrorFailAjax: (state: VideoStoreState, { video_id, detail }) => {
+const statusChangeMutations: MutationTree<VideoStoreState> = {
+    onErrorFailAjax: (state, { video_id, detail }) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
@@ -161,7 +160,7 @@ const statusChangeMutations = {
             detail,
         );
     },
-    onErrorNoWatchApiData: (state: VideoStoreState, { video_id, html }) => {
+    onErrorNoWatchApiData: (state, { video_id, html }) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
@@ -171,7 +170,7 @@ const statusChangeMutations = {
             html,
         );
     },
-    onErrorIsNeedJoinChannel: (state: VideoStoreState, { video_id }) => {
+    onErrorIsNeedJoinChannel: (state, { video_id }) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
@@ -181,7 +180,7 @@ const statusChangeMutations = {
             'チャンネル会員限定動画です。チャンネルに入会する必要があります。',
         );
     },
-    onErrorIsNeedPayment: (state: VideoStoreState, { video_id }) => {
+    onErrorIsNeedPayment: (state, { video_id }) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
@@ -191,7 +190,7 @@ const statusChangeMutations = {
             '有料動画です。動画を購入する必要があります。。',
         );
     },
-    onErrorIsEncrypted: (state: VideoStoreState, { video_id }) => {
+    onErrorIsEncrypted: (state, { video_id }) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 

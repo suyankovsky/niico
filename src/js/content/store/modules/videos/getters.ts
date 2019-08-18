@@ -1,23 +1,19 @@
 import load_status_map from 'js/content/map/load-status.ts';
 import cannot_render_video_html_reasons_map from 'js/content/map/cannot_render_video_html_reasons.ts';
 import { VideoStoreState, VideoStatus, VideoItem } from 'js/content/interface/Video';
+import { GetterTree } from 'vuex';
 
-export default {
+const getters: GetterTree<VideoStoreState, any> = {
     // 閉じられていない動画ID郡を返す
     not_closed_video_ids: (state) => {
-        const video_ids = Object.keys(state.items);
-        return video_ids.filter((key, index) => {
-            return !state.items[key]['is_closed'];
-        });
+        return state.videos.filter(item => !item.is_closed).map(item => item.id);
     },
 
     // 再生中の動画が閉じられた場合に次の動画IDを返す的な関数
     next_video_id: (state, getters, rootState) => {
-        const video_ids = Object.keys(state.items);
-        const candidate = video_ids.filter((key, index) => {
-            if (rootState.status.active_video_id === key) return true;
-            return !state.items[key]['is_closed'];
-        });
+        const candidate = state.videos
+            .filter(item => !item.is_closed || item.id === rootState.status.active_video_id)
+            .map(item => item.id);
 
         const length = candidate.length;
         const index = candidate.indexOf(rootState.status.active_video_id);
@@ -126,3 +122,5 @@ interface Item {
     code: string,
     message?: string,
 }
+
+export default getters;

@@ -3,31 +3,6 @@ import do_on_ended_map from 'js/content/map/do_on_ended.ts';
 import { VideoItem, VideoStoreState, VideoStatus, VideoError } from 'js/content/interface/Video';
 
 export default {
-    doTogglePlay({ commit, dispatch }, { video_id }: { video_id: string }) {
-        const el = misc.getVideoEl(video_id);
-        if (!el) return;
-
-        el.paused ? dispatch("doPlay", { video_id }) : dispatch("doPause", { video_id });
-    },
-    doPlay({ commit, rootState, state }, { video_id }: { video_id: string }) {
-        // if (rootState.status.active_video_id !== video_id) return;
-
-        const el = misc.getVideoEl(video_id);
-        const video = misc.getVideoItem(video_id);
-        console.log(el, video);
-        if (!el || !video || !video.content) return;
-
-        if (video.content.current_time) {
-            el.currentTime = video.content.current_time;
-        }
-        el.play();
-    },
-    doPause({ commit, rootState, state }, { video_id }: { video_id: string }) {
-        const el = misc.getVideoEl(video_id);
-        if (!el) return;
-
-        el.pause();
-    },
     onError({ commit }, error) {
         //commit("videos/onError", { video_id, error });
         const video_id = error.target.id;
@@ -40,22 +15,6 @@ export default {
             video_id,
             error_code: error.target.error.code,
         });
-    },
-    onLoadedmetadata: ({ commit, rootGetters, dispatch }, video_id) => {
-        const el = misc.getVideoEl(video_id);
-        if (!el) return;
-
-        commit('setDuration', {
-            video_id,
-            duration: el.duration || 0,
-        });
-        commit('onLoadedmetadata', {
-            video_id,
-        });
-
-        el.volume = rootGetters["setting/volume"] || 1;
-        console.log('doplay')
-        dispatch('doPlay', { video_id });
     },
     onTimeUpdate: ({ commit, rootState }) => {
         const video_id = rootState.status.active_video_id;
@@ -108,39 +67,5 @@ export default {
         }
 
         video_el.play();
-    },
-    onPlaying: ({ commit, rootState }) => {
-        const video_id = rootState.status.active_video_id;
-        const el = misc.getVideoEl(video_id);
-
-        if (!el) return;
-
-        commit('togglePlay', {
-            video_id,
-            is_paused: el.paused
-        });
-    },
-    onPlay: ({ commit, rootState }) => {
-        const video_id = rootState.status.active_video_id;
-        const el = misc.getVideoEl(video_id);
-
-        if (!el) return;
-
-
-        commit('togglePlay', {
-            video_id,
-            is_paused: el.paused
-        });
-    },
-    onPause: ({ commit, rootState }) => {
-        const video_id = rootState.status.active_video_id;
-        const el = <HTMLVideoElement>document.getElementById(video_id);
-
-        if (!el) return;
-
-        commit('togglePlay', {
-            video_id,
-            is_paused: el.paused
-        });
     },
 }

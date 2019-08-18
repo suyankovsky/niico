@@ -16,15 +16,15 @@
                 :id="video_id"
                 :poster="video.content.thumbnail_src"
                 :controls="setting.is_default_player_controller"
-                @loadedmetadata="onLoadedmetadata"
-                @canplay="onCanPlay"
+                @loadedmetadata="onLoadedmetadata(video_id)"
+                @canplay="onCanPlay(video_id)"
                 @waiting="onWaiting"
                 @timeupdate="onTimeUpdate"
                 @ended="onEnded"
                 @error="onError"
-                @play="onPlay"
-                @playing="onPlaying"
-                @pause="onPause"
+                @play="onPlay(video_id)"
+                @playing="onPlaying(video_id)"
+                @pause="onPause(video_id)"
                 ref="video"
             ></video>
             <template v-if="video.content.duration">
@@ -108,6 +108,11 @@ export default {
         "status.playbackRate": function(playbackRate) {
             if (!this.$refs.video) return;
             this.$refs.video.playbackRate = playbackRate;
+        },
+        "video.status": function(new_val, old_val) {
+            this.$refs.video.volume = this.$store.getters["setting/volume"];
+
+            if (new_val === 2525) this.$refs.video.play();
         }
     },
     computed: {
@@ -123,21 +128,28 @@ export default {
         }),
         ...mapMutations({
             onCanPlay: "videos/onCanPlay",
-            onWaiting: "videos/onWaiting"
+            onWaiting: "videos/onWaiting",
+            onPlaying: "videos/onPlaying",
+            onPlay: "videos/onPlaying",
+            onPause: "videos/onPause",
+            onLoadedmetadata: "videos/onLoadedmetadata"
         }),
         ...mapActions({
             onTimeUpdate: "videos/onTimeUpdate",
             onEnded: "videos/onEnded",
-            onPlay: "videos/onPlay",
-            onPlaying: "videos/onPlaying",
-            onPause: "videos/onPause",
             reLoadVideo: "videos/reLoadVideo",
-            onLoadedmetadata: "videos/onLoadedmetadata",
-            onError: "videos/onError",
-            doTogglePlay: "videos/doTogglePlay",
-            doPlay: "videos/doPlay",
-            doPause: "videos/doPause"
-        })
+            onError: "videos/onError"
+        }),
+        doPlay() {
+            this.$refs.video.play();
+        },
+        doPause() {
+            this.$refs.video.pause();
+        },
+        doTogglePlay() {
+            const el = $refs.video;
+            el.paused ? el.play() : el.pause();
+        }
     }
 };
 </script>

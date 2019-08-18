@@ -1,9 +1,4 @@
-import { ActionContext } from 'js/content/interface/Context.ts';
 import { ChannelUploader, UserUploader } from 'js/content/interface/Uploader';
-
-export interface VideoActionContext extends ActionContext {
-    state: VideoStoreState;
-}
 
 export interface VideoStoreState {
     videos: VideoItem[];
@@ -55,6 +50,7 @@ export interface VideoItemContent {
     posted_date: string;
     csrf_token: string;
     uploader: ChannelUploader | UserUploader;
+    duration: number;
 }
 
 export interface VideoError {

@@ -25,6 +25,7 @@ export default class {
             posted_date: v.video.postedDateTime,
             csrf_token: v.context.csrfToken,
             uploader: this.uploader(v),
+            duration: v.video.duration,
 
             prefixed_video_id: v.video.id,
 
