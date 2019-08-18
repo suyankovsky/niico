@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import WatchApiDataVideo from 'js/content/store/parser/watch-api-data-video.ts';
 import load_status_map from 'js/content/map/load-status.ts';
-import { VideoItem, VideoStoreState, VideoStatus, VideoError } from 'js/content/interface/Video';
+import { VideoItem, VideoStoreState, VideoStatus, VideoError, VideoBufferRange } from 'js/content/interface/Video';
 import { MutationTree } from 'vuex';
 import misc from 'js/content/lib/misc';
 
@@ -104,13 +104,16 @@ const editPropertyMutations: MutationTree<VideoStoreState> = {
     },
 };
 
-const HTMLVideoElementEventHandleMutation = {
+const HTMLVideoElementEventHandleMutation: MutationTree<VideoStoreState> = {
+    // 再生が開始された場合に発生
     onPlaying: (state, video_id) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
         video.is_paused = false;
     },
+
+    // 再生が一時停止された。pauseメソッドからの復帰後に発生する場合に発生
     onPaused: (state, video_id) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
@@ -144,6 +147,68 @@ const HTMLVideoElementEventHandleMutation = {
         video.status = VideoStatus.ElementWaiting;
     },
 
+    // 通常の再生が行われ現在の再生位置の変化が起こった場合に発生
+    onTimeupdate: (state, video_id) => {
+        const el = misc.getVideoEl(video_id);
+        if (!el) return;
+
+        const current_time = el.currentTime;
+        const duration = el.duration;
+        const bf = el.buffered;
+        const ranges: VideoBufferRange[] = [];
+
+        if (!current_time || !duration || !bf || !bf.length) return;
+
+        for (let i = 0; i < bf.length; i++) {
+            const start = bf.start(i);
+            const end = bf.end(i);
+            const left = start ? (start / duration * 100) : 0;
+            const width = ((end - start) / duration * 100);
+            ranges.push({
+                left,
+                width,
+            });
+        }
+
+        const video = state.videos.find(item => item.id === video_id);
+        if (!video) return;
+
+        video.ranges = ranges;
+        video.current_time = el.currentTime;
+    },
+
+    onMediaError: (state, event) => {
+        const video_id = event.target.id;
+        const error = event.target.error;
+
+        const video = state.videos.find(item => item.id === video_id);
+        if (!video) return;
+
+        if (error.code === MediaError.MEDIA_ERR_ABORTED) {
+            videoErrorHandler(
+                video,
+                VideoStatus.MediaError__Aborted,
+            );
+        }
+        if (error.code === MediaError.MEDIA_ERR_NETWORK) {
+            videoErrorHandler(
+                video,
+                VideoStatus.MediaError__Network,
+            );
+        }
+        if (error.code === MediaError.MEDIA_ERR_DECODE) {
+            videoErrorHandler(
+                video,
+                VideoStatus.MediaError__Decode,
+            );
+        }
+        if (error.code === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED) {
+            videoErrorHandler(
+                video,
+                VideoStatus.MediaError__NotSupported,
+            );
+        }
+    }
 };
 
 const videoErrorHandler = (video: VideoItem, status: VideoStatus, detail?: any) => {
@@ -152,6 +217,11 @@ const videoErrorHandler = (video: VideoItem, status: VideoStatus, detail?: any) 
         code: status,
         detail,
     });
+
+    /*misc.pushLog('ERROR_MEDIA_EVENT', {
+        video_id,
+        error_code: error.target.error.code,
+    });*/
 };
 const statusChangeMutations: MutationTree<VideoStoreState> = {
     onErrorFailAjax: (state, { video_id, detail }) => {

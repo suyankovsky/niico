@@ -4,7 +4,6 @@
             <ErrorNotification :video="video" :video_id="video_id" />
         </template>
         <template v-else-if="video.status < 1100">
-            {{video.status}}
             <LoadingNotification :is_show_actions="true" />
         </template>
         <template v-else-if="video.status > 1100">
@@ -18,13 +17,13 @@
                 :controls="setting.is_default_player_controller"
                 @loadedmetadata="onLoadedmetadata(video_id)"
                 @canplay="onCanPlay(video_id)"
-                @waiting="onWaiting"
-                @timeupdate="onTimeUpdate"
-                @ended="onEnded(video_id)"
-                @error="onError"
+                @waiting="onWaiting(video_id)"
                 @play="onPlay(video_id)"
                 @playing="onPlaying(video_id)"
                 @pause="onPause(video_id)"
+                @ended="onEnded(video_id)"
+                @timeupdate="onTimeUpdate(video_id)"
+                @error="onMediaError"
                 ref="video"
             ></video>
             <template v-if="video.content.duration">
@@ -132,13 +131,13 @@ export default {
             onPlaying: "videos/onPlaying",
             onPlay: "videos/onPlaying",
             onPause: "videos/onPause",
-            onLoadedmetadata: "videos/onLoadedmetadata"
+            onLoadedmetadata: "videos/onLoadedmetadata",
+            onTimeUpdate: "videos/onTimeUpdate",
+            onMediaError: "videos/onMediaError"
         }),
         ...mapActions({
-            onTimeUpdate: "videos/onTimeUpdate",
             onEnded: "videos/onEnded",
-            reLoadVideo: "videos/reLoadVideo",
-            onError: "videos/onError"
+            reLoadVideo: "videos/reLoadVideo"
         }),
         doPlay() {
             this.$refs.video.play();

@@ -15,7 +15,12 @@ export interface VideoItem {
 
     is_paused?: boolean; // 再生状態
     current_time?: number;// 現在の再生時間
-    ranges?: [];// バッファの配列
+    ranges?: VideoBufferRange[];// バッファの配列
+}
+
+export interface VideoBufferRange {
+    left: number;
+    width: number;
 }
 
 export interface VideoItemContent {
