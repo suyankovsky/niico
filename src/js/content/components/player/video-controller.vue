@@ -51,7 +51,7 @@
         <section class="timeSlider">
             <InputHorizontalRange
                 :min="0"
-                :max="video.duration"
+                :max="video.content.duration"
                 :step="0.01"
                 :value="video.current_time"
                 :buffered="video.ranges"
@@ -78,7 +78,7 @@
                 <li class="time_display">
                     <span class="current_time">{{video.current_time|formatTime}}</span>
                     <span class="separater">/</span>
-                    <span class="duration">{{video.duration|formatTime}}</span>
+                    <span class="duration">{{video.content.duration|formatTime}}</span>
                 </li>
             </ul>
             <ul>
@@ -576,8 +576,11 @@ export default {
     watch: {},
     computed: {
         ...mapState({
-            videos: state => state.videos.items,
-            video: state => state.videos.items[state.status.active_video_id],
+            videos: state => state.videos.videos,
+            video: state =>
+                state.videos.videos.find(
+                    item => item.id === state.status.active_video_id
+                ),
             status: state => state.status,
             setting: state => state.setting,
             viewerMylist: state => state.viewerMylist.items

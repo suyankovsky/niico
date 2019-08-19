@@ -34,11 +34,10 @@ const initializeMutations: MutationTree<VideoStoreState> = {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
-        video.content = WatchApiDataVideo.main(api_data);
         video.raw = api_data;
         video.current_time = 0;
         video.ranges = [];
-
+        video.content = WatchApiDataVideo.main(api_data);
         video.status = VideoStatus.AjaxLoadSuccess;
 
         if (video.content.is_public !== true) {
@@ -89,19 +88,6 @@ const editPropertyMutations: MutationTree<VideoStoreState> = {
 
         video.ranges = ranges;
     },
-
-    // setCurrentTimeの値はvideo要素へFBされない。
-    // timeupdateイベントで更新しており、FBすると無限ループしてしまうため。
-    // 代わりにmisc.updateActiveVideoCurrentTime()を使用のこと。
-    setCurrentTime: (state, video_id) => {
-        const video = state.videos.find(item => item.id === video_id);
-        if (!video) return;
-
-        const el = misc.getVideoEl(video_id);
-        if (!el) return;
-
-        video.current_time = el.currentTime;
-    },
 };
 
 const HTMLVideoElementEventHandleMutation: MutationTree<VideoStoreState> = {
@@ -114,7 +100,7 @@ const HTMLVideoElementEventHandleMutation: MutationTree<VideoStoreState> = {
     },
 
     // 再生が一時停止された。pauseメソッドからの復帰後に発生する場合に発生
-    onPaused: (state, video_id) => {
+    onPause: (state, video_id) => {
         const video = state.videos.find(item => item.id === video_id);
         if (!video) return false;
 
@@ -148,9 +134,14 @@ const HTMLVideoElementEventHandleMutation: MutationTree<VideoStoreState> = {
     },
 
     // 通常の再生が行われ現在の再生位置の変化が起こった場合に発生
-    onTimeupdate: (state, video_id) => {
-        const el = misc.getVideoEl(video_id);
-        if (!el) return;
+    onTimeupdate: (state, event) => {
+        if (!event || !event.target || !event.target.id) return;
+        const el = event.target;
+        const video_id = event.target.id;
+
+        const video = state.videos.find(item => item.id === video_id);
+        if (!video) return;
+        const index = state.videos.indexOf(video);
 
         const current_time = el.currentTime;
         const duration = el.duration;
@@ -170,11 +161,11 @@ const HTMLVideoElementEventHandleMutation: MutationTree<VideoStoreState> = {
             });
         }
 
-        const video = state.videos.find(item => item.id === video_id);
-        if (!video) return;
-
-        video.ranges = ranges;
-        video.current_time = el.currentTime;
+        Vue.set(state.videos, index, {
+            ...video,
+            current_time,
+            ranges,
+        });
     },
 
     onMediaError: (state, event) => {

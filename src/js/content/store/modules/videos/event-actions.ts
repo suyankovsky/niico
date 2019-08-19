@@ -1,6 +1,6 @@
 import misc from 'js/content/lib/misc.ts';
 import do_on_ended_map from 'js/content/map/do_on_ended.ts';
-import { VideoItem, VideoStoreState, VideoStatus, VideoError } from 'js/content/interface/Video';
+import { VideoItem, VideoStoreState, VideoStatus, VideoError, VideoBufferRange } from 'js/content/interface/Video';
 
 export default {
     onEnded: ({ commit, rootState, getters }, video_id) => {

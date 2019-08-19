@@ -18,11 +18,11 @@
                 @loadedmetadata="onLoadedmetadata(video_id)"
                 @canplay="onCanPlay(video_id)"
                 @waiting="onWaiting(video_id)"
-                @play="onPlay(video_id)"
+                @play="onPlaying(video_id)"
                 @playing="onPlaying(video_id)"
                 @pause="onPause(video_id)"
                 @ended="onEnded(video_id)"
-                @timeupdate="onTimeUpdate(video_id)"
+                @timeupdate="onTimeupdate"
                 @error="onMediaError"
                 ref="video"
             ></video>
@@ -37,7 +37,7 @@
                 <VideoController
                     :video_id="video_id"
                     :video="video"
-                    v-if="!setting.is_default_player_controller"
+                    v-if="video.hasOwnProperty('content') && !setting.is_default_player_controller"
                 />
             </template>
         </template>
@@ -132,8 +132,8 @@ export default {
             onPlay: "videos/onPlaying",
             onPause: "videos/onPause",
             onLoadedmetadata: "videos/onLoadedmetadata",
-            onTimeUpdate: "videos/onTimeUpdate",
-            onMediaError: "videos/onMediaError"
+            onMediaError: "videos/onMediaError",
+            onTimeupdate: "videos/onTimeupdate"
         }),
         ...mapActions({
             onEnded: "videos/onEnded",

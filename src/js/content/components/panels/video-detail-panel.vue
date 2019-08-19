@@ -3,7 +3,7 @@
         <template v-if="video.status < 200">動画情報の取得に失敗しました。</template>
         <template v-else-if="video.status < 1100">読み込み中...</template>
 
-        <template v-else-if="video.status > 1100">
+        <template v-else-if="video.status > 1100 && video.hasOwnProperty('content')">
             <div class="title">{{video.content.title}}</div>
             <ul class="count">
                 <li title="視聴数">

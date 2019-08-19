@@ -15,13 +15,14 @@
             </div>
             <div
                 class="currentTime"
-                :style="{left: (video.current_time / video.duration * 100) + '%'}"
+                :v-if="video.content"
+                :style="{left: (video.current_time / video.content.duration * 100) + '%'}"
             ></div>
         </div>
         <div class="container" @click="onClickTab(video_id, $event)">
             <div class="thumbnail">
-                <img v-if="video.thumbnail_src" :src="video.thumbnail_src" />
-                <div v-else-if="is_video_loading">
+                <img v-if="video.content.thumbnail_src" :src="video.content.thumbnail_src" />
+                <div v-else-if="1000 < video.status && video.status < 1100">
                     <loaderIcon class="icon-load" />
                 </div>
                 <div v-else>
@@ -29,8 +30,8 @@
                 </div>
             </div>
             <div class="title">
-                <span v-if="video.title">{{video.title}} - {{video_id}}</span>
-                <span v-else-if="is_video_loading">読み込み中... - {{video_id}}</span>
+                <span v-if="video.content.title">{{video.content.title}} - {{video_id}}</span>
+                <span v-else-if="1000 < video.status && video.status < 1100">読み込み中... - {{video_id}}</span>
                 <span v-else>読込失敗 - {{video_id}}</span>
             </div>
             <div class="close">

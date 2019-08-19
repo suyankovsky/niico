@@ -20,8 +20,8 @@ const actions: ActionTree<VideoStoreState, any> = {
         if (has_video) {
             const video = has_video;
 
-            // fetchの場合はここを抜ける必要があるのでステータスを見てあげる
-            if (video.status === VideoStatus.AjaxReLoadStarted) {
+            // リロード時以外はタブをアクティブにしてreturn
+            if (video.status !== VideoStatus.AjaxReLoadStarted) {
                 commit('uncloseVideo', { video_id });
                 commit('status/activateVideo', video_id, { root: true });
                 return;
