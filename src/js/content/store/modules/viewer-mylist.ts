@@ -1,6 +1,6 @@
 // 視聴者のマイリスト一覧の取得、マイリスト登録などを行う
 
-import ajaxApi from 'js/content/lib/ajax-api.ts';
+import ajaxApi from 'js/content/lib/ajax/ajax-api';
 
 const default_mylist = {
     name: 'とりあえずマイリスト',

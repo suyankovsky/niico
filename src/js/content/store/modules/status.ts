@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import ajaxApi from 'js/content/lib/ajax-api.ts';
+import ajaxApi from 'js/content/lib/ajax/ajax-api';
 
 const state = {
     // 現在再生中の動画ID

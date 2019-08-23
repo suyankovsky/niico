@@ -4,7 +4,7 @@
 */
 
 import $ from 'jquery';
-import ajaxResponceFormat from 'js/content/lib/ajax-responce-format.ts';
+import ajaxResponceFormat from 'js/content/lib/ajax/ajax-responce-format';
 import UploaderPostedVideolist from 'js/content/store/parser/uploader-posted-video-list.ts';
 import ChannelPostedVideoList from 'js/content/store/parser/channel-posted-video-list.ts';
 import misc from 'js/content/lib/misc.ts';

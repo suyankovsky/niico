@@ -3,7 +3,7 @@
     コメント取得リクエストパラメータの生成を行う
 */
 
-import ajaxApi from 'js/content/lib/ajax-api.ts';
+import ajaxApi from 'js/content/lib/ajax/ajax-api';
 
 export default class {
     static genRequestParams(original_data) {

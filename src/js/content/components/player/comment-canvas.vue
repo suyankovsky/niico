@@ -28,7 +28,7 @@ canvas {
 import $ from "jquery";
 import { mapState, mapGetters } from "vuex";
 
-import ajaxApi from "js/content/lib/ajax-api.ts";
+import ajaxApi from "js/content/lib/ajax/ajax-api.ts";
 import flowManager from "js/content/lib/flow-comment/manager.ts";
 import misc from "js/content/lib/misc.ts";
 

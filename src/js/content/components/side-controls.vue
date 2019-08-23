@@ -41,7 +41,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
-import ajaxApi from "js/content/lib/ajax-api.ts";
+import ajaxApi from "js/content/lib/ajax/ajax-api.ts";
 
 import addMylistIcon from "img/feather/folder-plus.svg";
 import twitterIcon from "img/feather/twitter.svg";

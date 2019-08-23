@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Vue from 'vue';
-import ajaxApi from 'js/content/lib/ajax-api.ts';
-import ajaxCommentsPrepare from 'js/content/lib/ajax-comments-prepare.ts';
+import ajaxApi from 'js/content/lib/ajax/ajax-api';
+import ajaxCommentsPrepare from 'js/content/lib/ajax/ajax-comments-prepare';
 
 const state = {
     items: {},

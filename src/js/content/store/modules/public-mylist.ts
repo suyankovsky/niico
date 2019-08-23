@@ -1,7 +1,7 @@
 // 公開マイリスト
 
 import Vue from 'vue';
-import ajaxApi from 'js/content/lib/ajax-api.ts';
+import ajaxApi from 'js/content/lib/ajax/ajax-api';
 import PublicMylistdetail from 'js/content/store/parser/public-mylist-detail.ts'
 
 const state = {

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import ajaxApi from 'js/content/lib/ajax-api.ts';
+import ajaxApi from 'js/content/lib/ajax/ajax-api';
 import UploaderPublicMylistGroupList from 'js/content/store/parser/uploader-public-mylist-group-list.ts';
 
 const state = {

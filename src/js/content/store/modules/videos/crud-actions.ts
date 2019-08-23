@@ -1,4 +1,4 @@
-import ajaxApi from 'js/content/lib/ajax-api.ts';
+import ajaxApi from 'js/content/lib/ajax/ajax-api';
 import load_status_map from 'js/content/map/load-status.ts';
 import { VideoStoreState, VideoStatus, VideoError } from 'js/content/interface/Video';
 import misc from 'js/content/lib/misc.ts';
