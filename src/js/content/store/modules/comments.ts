@@ -2,6 +2,9 @@ import $ from 'jquery';
 import Vue from 'vue';
 import ajaxApi from 'js/content/lib/ajax/ajax-api';
 import ajaxCommentsPrepare from 'js/content/lib/ajax/ajax-comments-prepare';
+import { ActionTree } from 'vuex';
+import { ThreadInformation } from 'js/content/interface/Thread';
+import { VideoItem } from 'js/content/interface/Video';
 
 const state = {
     items: {},
@@ -81,41 +84,32 @@ const mutations = {
     },
 }
 
-const actions = {
-    addComments: ({ commit, state, getters, rootState }, video_id) => {
-        return new Promise((resolve) => {
-            const original_data = rootState.videos.items[video_id].original_data;
-            if (!original_data) {
-                console.error('Failed read video original data');
-                return false;
+const actions: ActionTree<any, any> = {
+    addComments: ({ commit, state, getters, rootState }, video: VideoItem) => {
+        if (!video.content) return;
+        const is_channel = video.content.is_channel;
+        const params: ThreadInformation = {
+            thread_id: video.content.thread.thread_ids.use,
+            user_id: video.content.thread.user_id,
+            userkey: video.content.thread.user_key,
+            duration: video.content.thread.l,
+            optional_thread_id: video.content.thread.optional_thread_id,
+        };
+
+        return ajaxApi.getThreadDetail(is_channel, params).then(
+            comments => {
+                commit('loadSuccessComments', {
+                    video_id: video.id,
+                    comments,
+                });
+            },
+            error => {
+                commit('loadErrorComments', {
+                    video_id: video.id,
+                    comments: error,
+                });
             }
-            commit('initializeComments', { video_id });
-
-            const request_params = ajaxCommentsPrepare.genRequestParams(original_data);
-
-            const comments = request_params.then(
-                request_params => {
-                    return ajaxApi.getCommentDetail(request_params)
-                },
-            );
-
-            comments.then(
-                comments => {
-                    commit('loadSuccessComments', {
-                        video_id,
-                        comments,
-                    });
-                    resolve(true);
-                },
-                error => {
-                    commit('loadErrorComments', {
-                        video_id,
-                        comments: error,
-                    });
-                    resolve(false);
-                }
-            )
-        })
+        )
     },
 }
 

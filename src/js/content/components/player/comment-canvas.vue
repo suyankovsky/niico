@@ -33,11 +33,11 @@ import flowManager from "js/content/lib/flow-comment/manager.ts";
 import misc from "js/content/lib/misc.ts";
 
 export default {
-    props: ["video_id"],
+    props: ["video_id", "video"],
     created: function() {
         const is_load_success = this.$store.dispatch(
             "comments/addComments",
-            this.video_id
+            this.video
         );
         is_load_success.then(
             is_load_success => {
@@ -71,7 +71,6 @@ export default {
     computed: {
         ...mapState({
             videos: state => state.videos.items,
-            video: (state, video_id) => state.videos.items[video_id],
             comments: state => state.comments.items,
             status: state => state.status,
             setting: state => state.setting

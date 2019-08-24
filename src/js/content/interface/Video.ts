@@ -1,4 +1,5 @@
 import { ChannelUploader, UserUploader } from 'js/content/interface/Uploader';
+import { ThreadInformation } from 'js/content/interface/Thread';
 
 export interface VideoStoreState {
     videos: VideoItem[];
@@ -32,17 +33,7 @@ export interface VideoItemContent {
     is_deleted: boolean;// 削除済み動画である
 
     prefixed_video_id: string;
-    thread: {
-        thread_ids: {
-            default: number | null;
-            commuinty: number | null;
-            use: number | null;
-        }
-        user_id: number | null;
-        user_key: string | null;
-        l: number;
-        optional_thread_id: number | null;
-    }
+    thread: ThreadInformation;
 
     title: string;
     src: string | null;

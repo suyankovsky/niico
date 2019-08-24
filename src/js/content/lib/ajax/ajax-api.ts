@@ -4,10 +4,13 @@
 */
 
 import $ from 'jquery';
-import ajaxResponceFormat from 'js/content/lib/ajax/ajax-responce-format';
 import UploaderPostedVideolist from 'js/content/store/parser/uploader-posted-video-list.ts';
 import ChannelPostedVideoList from 'js/content/store/parser/channel-posted-video-list.ts';
 import misc from 'js/content/lib/misc.ts';
+import prepareThreadRequestParams from 'js/content/lib/ajax/prepare-request/thread';
+import parseThreadKeyResponce from 'js/content/lib/ajax/parse-responce/thread-key';
+import parseThreadResponce from 'js/content/lib/ajax/parse-responce/thread';
+import { ThreadInformation } from 'js/content/interface/Thread';
 
 export default class {
     static ajaxApi(params): Promise<any> {
@@ -57,7 +60,7 @@ export default class {
             url: 'https://flapi.nicovideo.jp/api/getthreadkey?thread=' + thread_id,
         }).then(
             responce => {
-                return ajaxResponceFormat.threadKey(responce);
+                return parseThreadKeyResponce(responce);
             }
         ).then(
             res => {
@@ -75,30 +78,31 @@ export default class {
         );
     }
 
-    static getCommentDetail(params) {
-        if (!params) return false;
-        const thread_id = JSON.parse(params)[2].thread.thread;
-
-        return this.ajaxApi({
-            url: 'https://nmsg.nicovideo.jp/api.json/',
-            type: 'POST',
-            data: params,
-            dataType: 'json',
-            contentType: 'application/json'
-        }).then(
+    static getThreadDetail(is_channel: boolean, params: ThreadInformation) {
+        return prepareThreadRequestParams(is_channel, params).then(
+            post_params => {
+                return this.ajaxApi({
+                    url: 'https://nmsg.nicovideo.jp/api.json/',
+                    type: 'POST',
+                    data: post_params,
+                    dataType: 'json',
+                    contentType: 'application/json'
+                });
+            }
+        ).then(
             responce => {
-                return ajaxResponceFormat.comments(responce);
+                return parseThreadResponce(responce);
             }
         ).then(
             res => {
                 misc.pushLog('SUCCESS_GET_COMMENT', {
-                    thread_id,
+                    thread_id: params.thread_id,
                 });
                 return res;
             },
             err => {
                 misc.pushLog('ERROR_GET_COMMENT', {
-                    thread_id,
+                    thread_id: params.thread_id,
                     error_id: 0,
                 });
                 return err;

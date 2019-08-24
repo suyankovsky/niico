@@ -33,6 +33,7 @@
                     v-show="status.active_video_id == video_id"
                     :key="key"
                     :video_id="video_id"
+                    :video="video"
                 />
                 <VideoController
                     :video_id="video_id"

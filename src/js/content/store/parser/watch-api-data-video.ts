@@ -33,11 +33,11 @@ export default class {
                 thread_ids: {
                     default: v.thread.ids.default,
                     commuinty: v.thread.ids.community,
-                    use: this.thread_id(v),//本来切り替えられるけど面倒なので初期値を使う
                 },
+                thread_id: this.thread_id(v),//本来切り替えられるけど面倒なので初期値を使う
                 user_id: v.viewer.id,
                 user_key: v.context.userkey,
-                l: v.video.duration,
+                duration: v.video.duration,
                 optional_thread_id: this.optional_thread_id(v),
             }
         }
