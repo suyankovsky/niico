@@ -23,16 +23,19 @@
         <dl>
             <dt>Videos</dt>
             <dd>
-                <template v-for="(video, video_id) in videos">
-                    <button @click="consoleVideo(video_id)" :key="video_id">{{video_id}}</button>
+                <template v-for="(video, index) in videos">
+                    <button @click="consoleVideo(video.id)" :key="index">{{video.id}}</button>
                 </template>
             </dd>
         </dl>
         <dl>
-            <dt>Comments</dt>
+            <dt>Threads</dt>
             <dd>
-                <template v-for="(comment, comment_id) in comments">
-                    <button @click="consoleComment(comment_id)" :key="comment_id">{{comment_id}}</button>
+                <template v-for="(thread, index) in threads">
+                    <button
+                        @click="consoleComment(thread.thread_id)"
+                        :key="index"
+                    >{{thread.thread_id}}</button>
                 </template>
             </dd>
         </dl>
@@ -67,8 +70,8 @@ import { mapState, mapActions, mapGetters } from "vuex";
 export default {
     components: {},
     computed: mapState({
-        videos: state => state.videos.items,
-        comments: state => state.comments.items,
+        videos: state => state.videos.videos,
+        threads: state => state.threads.threads,
         status: state => state.status,
         setting: state => state.setting,
         uploaders: state => state.uploaders.items,
@@ -88,12 +91,14 @@ export default {
         },
         consoleVideo: function(video_id) {
             console.log({
-                video: this.videos[video_id]
+                video: this.videos.find(item => item.id === video_id)
             });
         },
         consoleComment: function(comment_id) {
             console.log({
-                comment: this.comments[comment_id]
+                thread: this.threads.find(
+                    item => item.video_id === this.status.active_video_id
+                )
             });
         }
     }

@@ -1,17 +1,15 @@
-import $ from 'jquery';
-import Vue from 'vue';
 import ajaxApi from 'js/content/lib/ajax/ajax-api';
-import ajaxCommentsPrepare from 'js/content/lib/ajax/ajax-comments-prepare';
-import { ActionTree } from 'vuex';
-import { ThreadInformation } from 'js/content/interface/Thread';
+import { MutationTree, ActionTree, GetterTree } from 'vuex';
+import { ThreadStoreState, ThreadInformation, ThreadStatus } from 'js/content/interface/Thread';
 import { VideoItem } from 'js/content/interface/Video';
 
 const state = {
-    items: {},
+    threads: [],
 };
 
-const getters = {
+const getters: GetterTree<ThreadStoreState, any> = {
     thread: (state, getters, rootState) => {
+        return;
         const active_video_id = rootState.status.active_video_id;
         if (!state.items.hasOwnProperty(active_video_id)) return -1;
         const thread = state.items[active_video_id];
@@ -28,6 +26,7 @@ const getters = {
         });
     },
     comments: (state, getters, rootState) => {
+        return;
         const thread = getters.thread;
         if (thread < 0) return thread;
 
@@ -52,6 +51,7 @@ const getters = {
         });
     },
     comment_no_to_scroll: (state, getters, rootState) => {
+        return;
         const thread = getters.thread;
         if (thread < 0) return 0;
 
@@ -72,35 +72,57 @@ const getters = {
 
 };
 
-const mutations = {
-    initializeComments: (state, { video_id }) => {
-        Vue.set(state.items, video_id, 'loading');
+const mutations: MutationTree<ThreadStoreState> = {
+    initializeThread: (state, video: VideoItem) => {
+        if (!video.content || !video.content.thread || !video.content.thread.thread_id) return;
+
+        state.threads.push({
+            thread_id: video.content.thread.thread_id,
+            video_id: video.id,
+            status: ThreadStatus.AjaxLoadStarted,
+            comments: [],
+        });
     },
-    loadSuccessComments: (state, { video_id, comments }) => {
-        Vue.set(state.items, video_id, comments);
+    loadSuccessThread: (state, { video, comments }) => {
+        const thread = state.threads.find(item => item.video_id === video.id);
+        if (!thread) return;
+
+        thread.comments.push(...comments);
+        thread.status = ThreadStatus.AjaxLoadSuccess;
     },
-    loadErrorComments: (state, { video_id, error }) => {
-        Vue.set(state.items, video_id, 'error');
+    loadFailedThread: (state, { video, error }) => {
+        const thread = state.threads.find(item => item.video_id === video.id);
+        if (!thread) return;
+
+        thread.status = ThreadStatus.AjaxLoadFailed;
     },
 }
 
-const actions: ActionTree<any, any> = {
-    addComments: async ({ commit, state, getters, rootState }, video: VideoItem) => {
+const actions: ActionTree<ThreadStoreState, any> = {
+    addThread: async ({ commit, state, getters, rootState }, video: VideoItem) => {
         if (!video.content || !video.content.thread) {
             throw new Error('Invalid Paramator');
         }
 
+        commit('initializeThread', video);
+
         const is_channel = video.content.is_channel;
         const params = video.content.thread;
-
         return ajaxApi.getThreadDetail(is_channel, params).then(
             comments => {
-                commit('loadSuccessComments', {
-                    video_id: video.id,
+                commit('loadSuccessThread', {
+                    video,
                     comments,
                 });
-                return true;
-            }
+                return comments;
+            },
+            error => {
+                commit('loadSuccessThread', {
+                    video,
+                    error,
+                });
+                return error;
+            },
         );
     },
 }

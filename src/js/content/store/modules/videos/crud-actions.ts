@@ -57,7 +57,7 @@ const actions: ActionTree<VideoStoreState, any> = {
 
                 commit('status/setUserId', api_data.viewer.id, { root: true });
                 commit('status/activateVideo', video_id, { root: true });
-                dispatch('viewerMylist/getViewerMylistgroup', video.content.thread.thread_ids.use, { root: true });
+                dispatch('viewerMylist/getViewerMylistgroup', video.content.thread.thread_id, { root: true });
             },
             error => {
                 commit('onErrorFailAjaxr', {

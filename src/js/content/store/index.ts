@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import videos from 'js/content/store/modules/videos.ts';
 import status from 'js/content/store/modules/status.ts';
 import setting from 'js/content/store/modules/setting.ts';
-import comments from 'js/content/store/modules/comments.ts';
+import threads from 'js/content/store/modules/threads';
 import viewerMylist from 'js/content/store/modules/viewer-mylist.ts';
 import logs from 'js/content/store/modules/logs.ts';
 import uploaders from 'js/content/store/modules/uploaders.ts';
@@ -19,7 +19,7 @@ export default new Vuex.Store({
         videos,
         status,
         setting,
-        comments,
+        threads,
         viewerMylist,
         logs,
         uploaders,

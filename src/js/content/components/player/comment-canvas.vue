@@ -35,11 +35,11 @@ import misc from "js/content/lib/misc.ts";
 export default {
     props: ["video_id", "video"],
     created: function() {
-        this.$store.dispatch("comments/addComments", this.video).then(
+        this.$store.dispatch("threads/addThread", this.video).then(
             done => {
                 this.flowManager = new flowManager(
                     this.video_id,
-                    this.comments[this.video_id],
+                    done,
                     this.status.window_mode
                 );
 
@@ -59,8 +59,7 @@ export default {
     },
     computed: {
         ...mapState({
-            videos: state => state.videos.items,
-            comments: state => state.comments.items,
+            threads: state => state.threads.threads,
             status: state => state.status,
             setting: state => state.setting
         }),
