@@ -35,30 +35,19 @@ import misc from "js/content/lib/misc.ts";
 export default {
     props: ["video_id", "video"],
     created: function() {
-        const is_load_success = this.$store.dispatch(
-            "comments/addComments",
-            this.video
-        );
-        is_load_success.then(
-            is_load_success => {
-                if (is_load_success) {
-                    this.flowManager = new flowManager(
-                        this.video_id,
-                        this.comments[this.video_id],
-                        this.status.window_mode
-                    );
+        this.$store.dispatch("comments/addComments", this.video).then(
+            done => {
+                this.flowManager = new flowManager(
+                    this.video_id,
+                    this.comments[this.video_id],
+                    this.status.window_mode
+                );
 
-                    if (this.setting.is_compute_tpos_in_advance) {
-                        this.flowManager.readyTpos();
-                    }
-
-                    this.watchVideoPlayStatus();
-                } else {
-                    misc.pushLog("ERROR_GET_COMMENT", {
-                        video_id: this.video_id,
-                        error_id: 1
-                    });
+                if (this.setting.is_compute_tpos_in_advance) {
+                    this.flowManager.readyTpos();
                 }
+
+                this.watchVideoPlayStatus();
             },
             error => {
                 misc.pushLog("ERROR_GET_COMMENT", {

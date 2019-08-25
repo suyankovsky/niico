@@ -85,16 +85,13 @@ const mutations = {
 }
 
 const actions: ActionTree<any, any> = {
-    addComments: ({ commit, state, getters, rootState }, video: VideoItem) => {
-        if (!video.content) return;
+    addComments: async ({ commit, state, getters, rootState }, video: VideoItem) => {
+        if (!video.content || !video.content.thread) {
+            throw new Error('Invalid Paramator');
+        }
+
         const is_channel = video.content.is_channel;
-        const params: ThreadInformation = {
-            thread_id: video.content.thread.thread_ids.use,
-            user_id: video.content.thread.user_id,
-            userkey: video.content.thread.user_key,
-            duration: video.content.thread.l,
-            optional_thread_id: video.content.thread.optional_thread_id,
-        };
+        const params = video.content.thread;
 
         return ajaxApi.getThreadDetail(is_channel, params).then(
             comments => {
@@ -102,14 +99,9 @@ const actions: ActionTree<any, any> = {
                     video_id: video.id,
                     comments,
                 });
-            },
-            error => {
-                commit('loadErrorComments', {
-                    video_id: video.id,
-                    comments: error,
-                });
+                return true;
             }
-        )
+        );
     },
 }
 
