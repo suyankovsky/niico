@@ -8,8 +8,8 @@ import UploaderPostedVideolist from 'js/content/store/parser/uploader-posted-vid
 import ChannelPostedVideoList from 'js/content/store/parser/channel-posted-video-list.ts';
 import misc from 'js/content/lib/misc.ts';
 import prepareThreadRequestParams from 'js/content/lib/ajax/prepare-request/thread';
-import parseThreadKeyResponce from 'js/content/lib/ajax/parse-responce/thread-key';
-import parseThreadResponce from 'js/content/lib/ajax/parse-responce/thread';
+import parseThreadKeyResponce from 'js/content/lib/ajax/parse-response/thread-key';
+import parseThreadResponce from 'js/content/lib/ajax/parse-response/thread';
 import { ThreadInformation } from 'js/content/interface/Thread';
 
 export default class {

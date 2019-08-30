@@ -1,6 +1,16 @@
 import $ from 'jquery';
 
 export default class {
+    target: {
+        $container: JQuery;
+        $move: JQuery;
+        $leave: JQuery;
+        $over: JQuery;
+    };
+    milliseconds: number;
+    classname: string;
+    timer: null | number;//setTimeoutの戻り値
+
     constructor({
         container_target,
         move_target,
@@ -17,7 +27,7 @@ export default class {
         }
         this.milliseconds = milliseconds || 3000;
         this.classname = classname || 'is-active';
-        this.timer = undefined;
+        this.timer = null;
 
         this.target.$move.on('mousemove', () => this.onMousemove());
         this.target.$leave.on('mouseleave', () => this.onMouseleave());
