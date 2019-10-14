@@ -1,16 +1,40 @@
 import $ from 'jquery';
-import Createjs from 'createjs';
+import Createjs from '@createjs/easeljs';
 import Danmaku from 'js/content/lib/flow-comment/danmaku.ts';
+import Comment from 'js/content/lib/flow-comment/comment';
 
 export default class extends Createjs.Stage {
+    video_el: HTMLVideoElement;
+    canvas_el: HTMLVideoElement;
+    thread: Comment[];
+    danmakuManager: Danmaku;
+    children!: any[];
+    canvas: {
+        width: number;
+        height: number;
+    };
+    w: number;
+    h: number;
+    scaleX: number;
+    scaleY: number;
+    addChild!: void;
+
     constructor(video_id, thread) {
         const canvas_id = 'canvas--' + video_id;
 
         super(canvas_id);
 
-        this.video_el = document.getElementById(video_id);
-        this.canvas_el = document.getElementById(canvas_id);
+        this.video_el = <HTMLVideoElement>document.getElementById(video_id);
+        this.canvas_el = <HTMLVideoElement>document.getElementById(canvas_id);
         this.thread = thread;
+        this.canvas = {
+            width: 0,
+            height: 0,
+        };
+        this.w = 0;
+        this.h = 0;
+        this.scaleX = 0;
+        this.scaleY = 0;
 
         this.danmakuManager = new Danmaku(this);
 
@@ -56,8 +80,8 @@ export default class extends Createjs.Stage {
 
     getPlayerSize() {
         const video_size = {
-            w: parseInt($(this.video_el).width()),
-            h: parseInt($(this.video_el).height()),
+            w: $(this.video_el).width() || 0,
+            h: $(this.video_el).height() || 0,
         };
 
         const with_unit = {
@@ -89,5 +113,9 @@ export default class extends Createjs.Stage {
         this.children.forEach(layer => {
             layer.resetTiming();
         });
+    }
+
+    addChild(...params) {
+        super.addChild(...params);
     }
 }

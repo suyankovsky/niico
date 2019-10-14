@@ -1,4 +1,4 @@
-import Createjs from 'createjs';
+import Createjs from '@createjs/easeljs';
 import Collision from 'js/content/lib/flow-comment/collision.ts';
 
 // 各種定数
@@ -22,6 +22,12 @@ const shadow_style_for_black = "rgba(255, 255, 255, .8)";
 const shadow_style_for_default = "rgba(0, 0, 0, .8)";
 
 export default class extends Createjs.Container {
+    no: number;
+    content: string;
+    vpos: number;
+    mail: string;
+    position: 'ue' | 'shita';
+
     constructor(c, video_id) {
         super();
 
